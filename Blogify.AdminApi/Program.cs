@@ -1,4 +1,14 @@
+using Blogify.AdminApi.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// 從 appsettings.json 讀取連線字串
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// 設定資料庫連線
+builder.Services.AddDbContext<BlogContext>(options =>
+    options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
