@@ -1,11 +1,39 @@
-﻿@{
-	ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Blogify.AdminApi.Models.Article>
+@{
+    ViewData["Title"] = "Home Page";
+    var hasData = Model != null && Model.Any();
 }
 
 <div class="text-center">
-	<h1 class="display-4">Welcome</h1>
-	<p>
-		Learn about
-		<a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.
-	</p>
+    <h1 class="display-4">文章列表</h1>
+    <a class="btn btn-primary mb-3" asp-controller="Articles" asp-action="Create">新增文章</a>
+    @if (!hasData)
+    {
+        <p>目前沒有任何文章。</p>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>標題</th>
+                    <th>作者</th>
+                    <th>分類</th>
+                    <th>建立時間</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var article in Model)
+            {
+                <tr>
+                    <td>@article.Title</td>
+                    <td>@article.Author</td>
+                    <td>@article.CategoryId</td>
+                    <td>@article.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
 </div>
+

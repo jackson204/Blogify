@@ -8,7 +8,7 @@ public class Article
 
     public string? Summary { get; set; } // 文章摘要
 
-    public int AuthorId { get; set; } // 作者 ID
+    public string? Author { get; set; } // 作者 ID
 
     public int CategoryId { get; set; } // 分類 ID
 
@@ -26,8 +26,7 @@ public class Article
 
     public Category Category { get; set; } = null!;
 
-    public User Author { get; set; } = null!;
-
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; 
 }
+

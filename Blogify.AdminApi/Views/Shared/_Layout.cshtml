@@ -25,6 +25,9 @@
 					<li class="nav-item">
 						<a asp-action="Privacy" asp-area="" asp-controller="Home" class="nav-link text-dark">Privacy</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link text-dark" asp-controller="Articles" asp-action="Create">新增文章</a>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -48,3 +51,4 @@
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+

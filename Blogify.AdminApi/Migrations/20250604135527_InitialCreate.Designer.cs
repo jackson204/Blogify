@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blogify.AdminApi.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20250604122426_InitialCreate")]
+    [Migration("20250604135527_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -48,8 +48,8 @@ namespace Blogify.AdminApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -83,11 +83,14 @@ namespace Blogify.AdminApi.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Articles");
                 });
@@ -164,19 +167,15 @@ namespace Blogify.AdminApi.Migrations
 
             modelBuilder.Entity("Blogify.AdminApi.Models.Article", b =>
                 {
-                    b.HasOne("Blogify.AdminApi.Models.User", "Author")
-                        .WithMany("Articles")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Blogify.AdminApi.Models.Category", "Category")
                         .WithMany("Articles")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.HasOne("Blogify.AdminApi.Models.User", null)
+                        .WithMany("Articles")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
                 });
