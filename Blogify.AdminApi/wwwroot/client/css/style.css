@@ -1,0 +1,608 @@
+/* 客戶端樣式 */
+
+/* 圖示字體 (使用 Unicode 符號替代) */
+.icon-eye::before { content: "👁"; }
+.icon-clock::before { content: "⏰"; }
+.icon-user::before { content: "👤"; }
+.icon-heart::before { content: "❤"; }
+.icon-search::before { content: "🔍"; }
+.icon-chevron-left::before { content: "◀"; }
+.icon-chevron-right::before { content: "▶"; }
+.icon-menu::before { content: "☰"; }
+.icon-home::before { content: "🏠"; }
+
+/* 頁首 */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+.logo:hover {
+    color: #f8f9fa;
+    text-decoration: none;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-menu a:hover {
+    color: #f8f9fa;
+}
+
+/* 搜尋區域 */
+.search-section {
+    background: white;
+    padding: 2rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.search-container {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.search-btn {
+    padding: 12px 24px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background: #0056b3;
+}
+
+/* 主要內容區域 */
+.main-content {
+    padding: 2rem 0;
+}
+
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+}
+
+/* 文章列表 */
+.articles-section {
+    min-height: 500px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sort-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+}
+
+/* 文章卡片 */
+.article-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    overflow: hidden;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.article-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.article-card:hover .article-image img {
+    transform: scale(1.05);
+}
+
+.article-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.category-tag {
+    background: #007bff;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.publish-date {
+    color: #999;
+}
+
+.article-title {
+    margin: 1rem 0;
+    font-size: 1.3rem;
+    line-height: 1.4;
+}
+
+.article-title a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.article-title a:hover {
+    color: #007bff;
+}
+
+.article-excerpt {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    background: #f8f9fa;
+    color: #666;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    border: 1px solid #e9ecef;
+}
+
+.article-footer {
+    padding-top: 1rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.article-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.article-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.like-btn {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #666;
+}
+
+.like-btn:hover {
+    background: #f8f9fa;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.like-btn.liked {
+    background: #ff6b6b;
+    border-color: #ff6b6b;
+    color: white;
+}
+
+/* 側邊欄 */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sidebar-section {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #007bff;
+}
+
+/* 分類列表 */
+.categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.category-filter {
+    padding: 10px 15px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #666;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.category-filter:hover {
+    background: #f8f9fa;
+    border-color: #007bff;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.category-filter.active {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+/* 熱門文章 */
+.popular-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.popular-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.popular-rank {
+    background: #007bff;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.popular-content {
+    flex: 1;
+}
+
+.popular-title {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    line-height: 1.4;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.popular-title:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.popular-stats {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* 最新文章 */
+.latest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.latest-item {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.latest-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.latest-title {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    line-height: 1.4;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.latest-title:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.latest-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* 分頁 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 3rem;
+    padding: 2rem 0;
+}
+
+.page-btn {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #666;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.page-btn:hover {
+    background: #f8f9fa;
+    border-color: #007bff;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.page-btn.active {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.page-ellipsis {
+    padding: 10px 5px;
+    color: #999;
+}
+
+/* 無結果狀態 */
+.no-results {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.no-results h3 {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+/* 頁尾 */
+.footer {
+    background: #343a40;
+    color: white;
+    padding: 3rem 0 2rem;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h4 {
+    margin-bottom: 1rem;
+    color: #f8f9fa;
+}
+
+.footer-section p,
+.footer-section a {
+    color: #adb5bd;
+    text-decoration: none;
+    line-height: 1.6;
+}
+
+.footer-section a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #495057;
+    color: #adb5bd;
+}
+
+/* 響應式設計 */
+@media (max-width: 992px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .sidebar {
+        order: -1;
+    }
+    
+    .categories-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .category-filter {
+        flex: 0 0 auto;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-menu {
+        gap: 1rem;
+    }
+    
+    .search-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .article-stats {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .article-footer {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .page-btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .article-image {
+        height: 150px;
+    }
+    
+    .article-title {
+        font-size: 1.1rem;
+    }
+    
+    .sidebar-section {
+        padding: 1rem;
+    }
+    
+    .popular-item,
+    .latest-item {
+        font-size: 0.9rem;
+    }
+} 

@@ -24,10 +24,7 @@
    "github.copilot.chat.localeOverride": "zh-TW",
    "github.copilot.chat.useProjectTemplates": true,
    "github.copilot.chat.scopeSelection": true,
-   "chat.detectParticipant.enabled": true,
-
-
-   "github.copilot.chat.temporalContext.enabled": true,
+  "chat.detectParticipant.enabled": true,
    "inlineChat.holdToSpeech": true,
    "inlineChat.finishOnType": false,
    "inlineChat.mode": "preview",
@@ -88,5 +85,6 @@
    "accessibility.voice.autoSynthesize": "off",
    "accessibility.voice.keywordActivation": "chatInContext",
    "accessibility.voice.speechTimeout": 1200,
-   "accessibility.voice.ignoreCodeBlocks": true
+  "accessibility.voice.ignoreCodeBlocks": true,
+  "github.copilot.chat.editor.temporalContext.enabled": true
  }
