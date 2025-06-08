@@ -16,6 +16,16 @@ public class ArticlesController : Controller
     [HttpGet("Create")]
     public IActionResult Create()
     {
+        // 假資料分類清單
+        var categories = new List<Category>
+        {
+            new Category { Id = 1, Name = "前端開發" },
+            new Category { Id = 2, Name = "後端開發" },
+            new Category { Id = 3, Name = "資料庫" },
+            new Category { Id = 4, Name = "DevOps" },
+            new Category { Id = 5, Name = "行動開發" }
+        };
+        ViewBag.Categories = categories;
         return View();
     }
 
