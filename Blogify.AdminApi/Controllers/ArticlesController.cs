@@ -34,20 +34,6 @@ public class ArticlesController : Controller
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromForm] ArticleCreateViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            // 保持分類下拉選單
-            ViewBag.Categories = new List<Category>
-            {
-                new Category { Id = 1, Name = "前端開發" },
-                new Category { Id = 2, Name = "後端開發" },
-                new Category { Id = 3, Name = "資料庫" },
-                new Category { Id = 4, Name = "DevOps" },
-                new Category { Id = 5, Name = "行動開發" }
-            };
-            return View(model);
-        }
-
         var article = new Article
         {
             Title = model.Title,
