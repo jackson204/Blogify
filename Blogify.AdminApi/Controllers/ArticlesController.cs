@@ -1,5 +1,6 @@
 using Blogify.AdminApi.Models;
 using Blogify.AdminApi.ViewModels;
+using Blogify.AdminApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blogify.AdminApi.Controllers;
@@ -8,12 +9,20 @@ namespace Blogify.AdminApi.Controllers;
 public class ArticlesController : Controller
 {
     private readonly BlogContext _context;
+    private readonly IArticleService _articleService;
 
-    public ArticlesController(BlogContext context)
+    public ArticlesController(BlogContext context, IArticleService articleService)
     {
         _context = context;
+        _articleService = articleService;
     }
 
+    [HttpGet("List")]
+    public async Task<IActionResult> List()
+    {
+        var articles = await _articleService.GetArticleListAsync();
+        return View(articles);
+    }
     
     [HttpGet("Create")]
     public IActionResult Create()

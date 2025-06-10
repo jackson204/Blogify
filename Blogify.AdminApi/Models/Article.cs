@@ -18,6 +18,8 @@ public class Article
 
     public string? ImageUrl { get; set; } // 文章圖片 URL
 
+    public int Views { get; set; } // 瀏覽次數
+
     public ArticleStatus Status { get; set; } // 草稿 / 已發布
 
     public bool IsFeatured { get; set; } // 是否為精選文章

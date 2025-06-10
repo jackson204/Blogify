@@ -1,0 +1,38 @@
+@model List<Blogify.AdminApi.ViewModels.ArticleListItemViewModel>
+@{
+    ViewData["Title"] = "文章管理清單";
+}
+<div class="admin-article-list">
+    <h2>文章管理清單</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>標題</th>
+                <th>作者</th>
+                <th>分類</th>
+                <th>狀態</th>
+                <th>瀏覽數</th>
+                <th>最後更新</th>
+                <th>精選</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Author</td>
+                <td>@item.CategoryName</td>
+                <td>@item.Status</td>
+                <td>@item.Views</td>
+                <td>@item.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@(item.IsFeatured ? "★" : "")</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Articles", new { id = item.Id })" class="btn btn-sm btn-primary">編輯</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

@@ -1,4 +1,5 @@
 using Blogify.AdminApi.Models;
+using Blogify.AdminApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<BlogContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 
 var app = builder.Build();
 
