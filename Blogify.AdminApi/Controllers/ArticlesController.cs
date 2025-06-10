@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blogify.AdminApi.Controllers;
 
-[Route("[controller]")]
+[Route("admin/articles")]
 public class ArticlesController : Controller
 {
     private readonly BlogContext _context;
@@ -76,6 +76,6 @@ public class ArticlesController : Controller
 
         _context.Articles.Add(article);
         await _context.SaveChangesAsync();
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("List");
     }
 }
