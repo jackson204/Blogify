@@ -4,12 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 從 appsettings.json 讀取連線字串
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 // 設定資料庫連線
+// 切換為 In-Memory Database
 builder.Services.AddDbContext<BlogContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseInMemoryDatabase("BlogDb"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
