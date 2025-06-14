@@ -1,50 +1,78 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
-	<meta charset="utf-8" />
-	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<title>@ViewData["Title"] - Blogify.AdminApi</title>
-	<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-	<link asp-append-version="true" href="~/css/site.css" rel="stylesheet" />
-	<link asp-append-version="true" href="~/Blogify.AdminApi.styles.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - MyBlog</title>
+    <meta name="description" content="MyBlog 管理後台儀表板">
+    <!-- 樣式表 -->
+    <link rel="stylesheet" href="@Url.Content("~/shared/css/common.css")">
+    <link rel="stylesheet" href="@Url.Content("~/admin/css/admin.css")">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
 </head>
 <body>
-<header>
-	<nav class="bg-white border-bottom box-shadow mb-3 navbar navbar-expand-sm navbar-light navbar-toggleable-sm">
-		<div class="container-fluid">
-			<a asp-action="Index" asp-area="" asp-controller="Home" class="navbar-brand">Blogify.AdminApi</a>
-			<button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target=".navbar-collapse"
-				data-bs-toggle="collapse" type="button">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse d-sm-inline-flex justify-content-between navbar-collapse">
-				<ul class="flex-grow-1 navbar-nav">
-					<li class="nav-item">
-						<a asp-action="Index" asp-area="" asp-controller="Home" class="nav-link text-dark">Home</a>
-					</li>
-					<li class="nav-item">
-						<a asp-action="Privacy" asp-area="" asp-controller="Home" class="nav-link text-dark">Privacy</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-</header>
-<div class="container">
-	<main class="pb-3" role="main">
-		@RenderBody()
-	</main>
-</div>
-
-<footer class="border-top footer text-muted">
-	<div class="container">
-		&copy; 2025 - Blogify.AdminApi -
-		<a asp-action="Privacy" asp-area="" asp-controller="Home">Privacy</a>
-	</div>
-</footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script asp-append-version="true" src="~/js/site.js"></script>
-@await RenderSectionAsync("Scripts", required: false)
+    <div class="admin-layout">
+        <!-- 側邊欄 -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="@Url.Content("~/admin/index.html")" class="sidebar-logo">
+                    📊 MyBlog Admin
+                </a>
+            </div>
+            <nav>
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="@Url.Content("~/admin/index.html")" class="active">
+                            <i class="icon-dashboard"></i>
+                            <span>儀表板</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Content("~/admin/articles.html")">
+                            <i class="icon-article"></i>
+                            <span>文章管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Content("~/admin/categories.html")">
+                            <i class="icon-category"></i>
+                            <span>分類管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#settings">
+                            <i class="icon-settings"></i>
+                            <span>系統設定</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <!-- 頂部導航 -->
+        <header class="admin-header">
+            <h1 class="header-title">@ViewData["Title"]</h1>
+            <div class="header-actions">
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <span class="user-name">管理員</span>
+                </div>
+                <button class="logout-btn" data-action="logout">
+                    <i class="icon-logout"></i>
+                    登出
+                </button>
+            </div>
+        </header>
+        <!-- 主要內容 -->
+        <main class="admin-main">
+            @RenderBody()
+        </main>
+    </div>
+    <!-- JavaScript -->
+    <script src="@Url.Content("~/shared/js/utils.js")"></script>
+    <script src="@Url.Content("~/admin/js/api.js")"></script>
+    <script src="@Url.Content("~/admin/js/auth.js")"></script>
+    <script src="@Url.Content("~/admin/js/admin.js")"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
