@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章詳情 - MyBlog</title>
+    <meta name="description" content="閱讀完整的技術文章內容">
+    
+    <!-- 樣式表 -->
+    <link rel="stylesheet" href="../shared/css/common.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/article.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+</head>
+<body>
+    <!-- 頁首 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    📝 MyBlog
+                </a>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="index.html"><i class="icon-home"></i> 首頁</a></li>
+                        <li><a href="index.html#categories">分類</a></li>
+                        <li><a href="index.html#about">關於</a></li>
+                        <li><a href="../admin/login.html">管理</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要內容 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 載入中狀態 -->
+            <div id="loadingState" class="text-center p-5">
+                <div class="spinner"></div>
+                <p class="mt-3">載入文章中...</p>
+            </div>
+
+            <!-- 錯誤狀態 -->
+            <div id="errorState" class="d-none">
+                <div class="card text-center p-5">
+                    <h2>😕 文章不存在</h2>
+                    <p class="text-muted mt-3">抱歉，您要查看的文章不存在或已被刪除。</p>
+                    <a href="index.html" class="btn btn-primary mt-3">返回首頁</a>
+                </div>
+            </div>
+
+            <!-- 文章內容 -->
+            <div id="articleContent" class="d-none">
+                <div class="article-wrapper">
+                    <!-- 文章主體 -->
+                    <article class="article-main">
+                        <!-- 文章標題區 -->
+                        <header class="article-header">
+                            <div class="article-breadcrumb mb-3">
+                                <a href="index.html">首頁</a>
+                                <span class="breadcrumb-separator">></span>
+                                <span id="articleCategory"></span>
+                                <span class="breadcrumb-separator">></span>
+                                <span class="current">文章詳情</span>
+                            </div>
+                            
+                            <h1 id="articleTitle" class="article-title-main"></h1>
+                            
+                            <div class="article-meta-main">
+                                <div class="meta-left">
+                                    <span class="meta-item">
+                                        <i class="icon-user"></i>
+                                        <span id="articleAuthor"></span>
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="icon-clock"></i>
+                                        <span id="articleDate"></span>
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="icon-eye"></i>
+                                        <span id="articleViews"></span> 次瀏覽
+                                    </span>
+                                    <span class="meta-item">
+                                        ⏱️ <span id="articleReadTime"></span> 分鐘閱讀
+                                    </span>
+                                </div>
+                                <div class="meta-right">
+                                    <button id="likeButton" class="like-btn-main">
+                                        <i class="icon-heart"></i>
+                                        <span id="likesCount"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="articleTags" class="article-tags-main"></div>
+                        </header>
+
+                        <!-- 文章圖片 -->
+                        <div class="article-image-main">
+                            <img id="articleImage" src="" alt="" loading="lazy">
+                        </div>
+
+                        <!-- 文章內容 -->
+                        <div class="article-body">
+                            <div id="articleText" class="article-text"></div>
+                        </div>
+
+                        <!-- 文章底部 -->
+                        <footer class="article-footer">
+                            <div class="article-actions">
+                                <button id="shareButton" class="btn btn-secondary">
+                                    📤 分享文章
+                                </button>
+                                <button id="printButton" class="btn btn-secondary">
+                                    🖨️ 列印文章
+                                </button>
+                            </div>
+                            
+                            <div class="article-navigation">
+                                <a href="index.html" class="btn btn-primary">
+                                    ← 返回文章列表
+                                </a>
+                            </div>
+                        </footer>
+                    </article>
+
+                    <!-- 側邊欄 -->
+                    <aside class="article-sidebar">
+                        <!-- 目錄 -->
+                        <div class="sidebar-section sticky-sidebar">
+                            <h3 class="sidebar-title">文章目錄</h3>
+                            <div id="tableOfContents" class="toc">
+                                <!-- 目錄將由 JavaScript 自動生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 相關文章 -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">相關文章</h3>
+                            <div id="relatedArticles">
+                                <div class="text-center">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 最新文章 -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">最新文章</h3>
+                            <div id="latestArticles">
+                                <div class="text-center">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>MyBlog</h4>
+                    <p>專業的技術部落格平台，分享最新的程式設計知識和開發經驗。</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速連結</h4>
+                    <p><a href="index.html">首頁</a></p>
+                    <p><a href="index.html#categories">文章分類</a></p>
+                    <p><a href="index.html#about">關於我們</a></p>
+                    <p><a href="../admin/login.html">管理後台</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>技術支援</h4>
+                    <p>本站使用純 HTML、CSS 和 JavaScript 建構</p>
+                    <p>響應式設計，支援各種裝置</p>
+                </div>
+                <div class="footer-section">
+                    <h4>聯絡資訊</h4>
+                    <p>Email: contact@myblog.com</p>
+                    <p>如有任何問題或建議，歡迎與我們聯絡</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MyBlog. 版權所有。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../shared/js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/article.js"></script>
+</body>
+</html> 
