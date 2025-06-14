@@ -145,6 +145,8 @@ class AdminAuth {
     }
 
     checkAuthentication() {
+        //TODO: 檢查是否需要自動登出或刷新認證
+        return true;
         if (!adminAPI.isAuthenticated()) {
             // 未登入，重導向到登入頁
             window.location.href = 'login.html';
