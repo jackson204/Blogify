@@ -30,4 +30,8 @@ public class Article
 
     [Required]
     public string Content { get; set; }
+
+    public int Views { get; set; }
+
+    public DateTime UpdatedAt { get; set; }
 }

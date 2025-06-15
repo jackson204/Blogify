@@ -1,4 +1,5 @@
 using Blogify.AdminApi.Models;
+using Blogify.AdminApi.Models.Repository;
 using Blogify.AdminApi.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,11 @@ namespace Blogify.AdminApi.Controllers;
 
 public class ArticleController : Controller
 {
+    public IActionResult List()
+    {
+        var articles = ArticleRepository.GetArticles();
+        return View(articles);
+    }
     public IActionResult Create()
     {
         var category = new List<Category>

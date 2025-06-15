@@ -1,0 +1,210 @@
+@model IEnumerable<Article>
+
+<div id="articlesListView">
+    <!-- 頁面標題 -->
+    <div class="page-header">
+        <h2 class="page-title">文章管理</h2>
+        <p class="page-subtitle">管理您的所有文章內容</p>
+    </div>
+    <!-- 操作工具列 -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">文章列表</h3>
+            <div class="card-actions">
+                <button id="newArticleBtn" class="btn btn-primary">
+                    <i class="icon-plus"></i>
+                    新增文章
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- 篩選工具 -->
+            <div class="filter-toolbar">
+                <div class="filter-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="搜尋文章標題、內容或作者...">
+                </div>
+                <div class="filter-group">
+                    <select id="statusFilter" class="form-control">
+                        <option value="">所有狀態</option>
+                        <option value="published">已發布</option>
+                        <option value="draft">草稿</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="categoryFilter" class="form-control">
+                        <option value="">所有分類</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="sortFilter" class="form-control">
+                        <option value="updatedAt">更新時間</option>
+                        <option value="title">標題</option>
+                        <option value="author">作者</option>
+                        <option value="views">瀏覽數</option>
+                    </select>
+                </div>
+            </div>
+            <!-- 批量操作 -->
+            <div class="batch-actions d-none" id="batchActions">
+                <div class="batch-info">
+                    已選擇 <span id="selectedCount">0</span> 篇文章
+                </div>
+                <div class="batch-buttons">
+                    <button class="btn btn-secondary btn-sm" data-action="publish">批量發布</button>
+                    <button class="btn btn-secondary btn-sm" data-action="draft">設為草稿</button>
+                    <button class="btn btn-secondary btn-sm" data-action="feature">設為精選</button>
+                    <button class="btn btn-danger btn-sm" data-action="delete">批量刪除</button>
+                </div>
+            </div>
+            <!-- 文章表格 -->
+            <div class="table-container">
+                <table class="data-table" id="articlesTable">
+                    <thead>
+                        <tr>
+                            <th width="40">
+                                <input type="checkbox" id="selectAll">
+                            </th>
+                            <th>標題</th>
+                            <th width="100">作者</th>
+                            <th width="100">分類</th>
+                            <th width="80">狀態</th>
+                            <th width="100">瀏覽數</th>
+                            <th width="120">更新時間</th>
+                            <th width="120">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articlesTableBody">
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var article in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="select-article" value="@article.Id" />
+                                    </td>
+                                    <td>@article.Title</td>
+                                    <td>@article.Author</td>
+                                    <td>@article.Category</td>
+                                    <td>@(article.Status == "published" ? "已發布" : "草稿")</td>
+                                    <td>@article.Views</td>
+                                    <td>@article.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" data-action="edit" data-id="@article.Id">編輯</button>
+                                        <button class="btn btn-sm btn-danger" data-action="delete" data-id="@article.Id">刪除</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center p-4">
+                                    <div class="spinner d-none"></div>
+                                    <p class="mt-3">目前沒有資料</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- 分頁 -->
+            <div id="paginationContainer" class="pagination-container"></div>
+        </div>
+    </div>
+</div>
+
+@* <div id="articleEditView" class="d-none"> *@
+@*     <!-- 頁面標題 --> *@
+@*     <div class="page-header"> *@
+@*         <h2 class="page-title" id="editPageTitle">新增文章</h2> *@
+@*         <p class="page-subtitle">填寫文章資訊並發布</p> *@
+@*     </div> *@
+@*     <!-- 編輯表單 --> *@
+@*     <form id="articleForm" class="content-card"> *@
+@*         <div class="card-header"> *@
+@*             <h3 class="card-title">文章資訊</h3> *@
+@*             <div class="card-actions"> *@
+@*                 <button type="button" id="cancelEditBtn" class="btn btn-secondary"> *@
+@*                     <i class="icon-cancel"></i> *@
+@*                     取消 *@
+@*                 </button> *@
+@*                 <button type="submit" class="btn btn-primary"> *@
+@*                     <i class="icon-save"></i> *@
+@*                     儲存 *@
+@*                 </button> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="card-body"> *@
+@*             <input type="hidden" id="articleId"> *@
+@*             <div class="form-row"> *@
+@*                 <div class="form-group"> *@
+@*                     <label for="articleTitle" class="form-label">文章標題 *</label> *@
+@*                     <input type="text" id="articleTitle" name="title" class="form-control" required> *@
+@*                 </div> *@
+@*             </div> *@
+@*             <div class="form-row"> *@
+@*                 <div class="form-group"> *@
+@*                     <label for="articleExcerpt" class="form-label">文章摘要</label> *@
+@*                     <textarea id="articleExcerpt" name="excerpt" class="form-control" rows="3" placeholder="簡短描述文章內容..."></textarea> *@
+@*                 </div> *@
+@*             </div> *@
+@*             <div class="form-row"> *@
+@*                 <div class="form-group"> *@
+@*                     <label for="articleAuthor" class="form-label">作者</label> *@
+@*                     <input type="text" id="articleAuthor" name="author" class="form-control" value="管理員"> *@
+@*                 </div> *@
+@*                 <div class="form-group"> *@
+@*                     <label for="articleCategory" class="form-label">分類 *</label> *@
+@*                     <select id="articleCategory" name="category" class="form-control" required> *@
+@*                         <option value="">請選擇分類</option> *@
+@*                     </select> *@
+@*                 </div> *@
+@*             </div> *@
+@*             <div class="form-row"> *@
+@*                 <div class="form-group"> *@
+@*                     <label for="articleTags" class="form-label">標籤</label> *@
+@*                     <input type="text" id="articleTags" name="tags" class="form-control" placeholder="用逗號分隔多個標籤"> *@
+@*                 </div> *@
+@*                 <div class="form-group"> *@
+@*                     <label for="articleReadTime" class="form-label">閱讀時間（分鐘）</label> *@
+@*                     <input type="number" id="articleReadTime" name="readTime" class="form-control" min="1" value="5"> *@
+@*                 </div> *@
+@*             </div> *@
+@*             <div class="form-row"> *@
+@*                 <div class="form-group"> *@
+@*                     <label for="articleImage" class="form-label">文章圖片 URL</label> *@
+@*                     <input type="url" id="articleImage" name="image" class="form-control" placeholder="https://example.com/image.jpg"> *@
+@*                 </div> *@
+@*             </div> *@
+@*             <div class="form-row"> *@
+@*                 <div class="form-group"> *@
+@*                     <label for="articleStatus" class="form-label">狀態</label> *@
+@*                     <select id="articleStatus" name="status" class="form-control"> *@
+@*                         <option value="draft">草稿</option> *@
+@*                         <option value="published">已發布</option> *@
+@*                     </select> *@
+@*                 </div> *@
+@*                 <div class="form-group"> *@
+@*                     <label class="checkbox-label"> *@
+@*                         <input type="checkbox" id="articleFeatured" name="featured"> *@
+@*                         <span class="checkmark"></span> *@
+@*                         設為精選文章 *@
+@*                     </label> *@
+@*                 </div> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label for="articleContent" class="form-label">文章內容 *</label> *@
+@*                 <div class="editor-container"> *@
+@*                     <div class="editor-toolbar"> *@
+@*                         <button type="button" class="editor-btn" data-action="bold">粗體</button> *@
+@*                         <button type="button" class="editor-btn" data-action="italic">斜體</button> *@
+@*                         <button type="button" class="editor-btn" data-action="heading">標題</button> *@
+@*                         <button type="button" class="editor-btn" data-action="code">程式碼</button> *@
+@*                         <button type="button" class="editor-btn" data-action="link">連結</button> *@
+@*                     </div> *@
+@*                     <textarea id="articleContent" name="content" class="editor-content" placeholder="在此輸入文章內容..." required></textarea> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </form> *@
+@* </div> *@
