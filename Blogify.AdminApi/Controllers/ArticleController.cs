@@ -1,4 +1,5 @@
 using Blogify.AdminApi.Models;
+using Blogify.AdminApi.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blogify.AdminApi.Controllers;
@@ -19,8 +20,21 @@ public class ArticleController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(Article article)
+    public IActionResult Create(ArticleViewModel model)
     {
+        var article = new Article()
+        {
+            Title = model.Title,
+            Content = model.Content,
+            Excerpt = model.Excerpt,
+            Author = model.Author,
+            Tags = model.Tags,
+            ReadTime = model.ReadTime,
+            Image = model.Image,
+            Status = model.Status,
+            Featured = model.Featured,
+            Category = model.Category
+        };
         return View();
     }
 }
