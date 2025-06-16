@@ -1,5 +1,5 @@
 
-@model IEnumerable<Article>
+@model List<Blogify.AdminApi.Views.ViewModel.ArticleListItemViewModel>
 @{
     ViewData["Title"] = "文章管理";
 }
@@ -77,34 +77,34 @@
                         </tr>
                     </thead>
                     <tbody id="articlesTableBody">
-                        @if (Model != null && Model.Any())
+                        @if (Model.Any())
                         {
-                            foreach (var article in Model)
+                            foreach (var viewModel in Model)
                             {
                                 <tr>
                                     <td>
-                                        <input type="checkbox" class="select-article" value="@article.Id" />
+                                        <input type="checkbox" class="select-article" value="@viewModel.Id" />
                                     </td>
                                     <td>
                                         <div class="article-title-cell">
-                                            <strong>@article.Title</strong>
-                                            @if (article.Featured)
+                                            <strong>@viewModel.Title</strong>
+                                            @if (viewModel.Featured)
                                             {
                                                 <span class="status-badge status-featured">精選</span>
                                             }
                                         </div>
                                     </td>
-                                    <td>@article.Author</td>
-                                    <td>@article.Category</td>
+                                    <td>@viewModel.Author</td>
+                                    <td>@viewModel.CategoryName</td>
                                     <td>
                                         <div class="category-name-cell">
-                                           <span class="status-badge @(article.Status=="published"?"status-published":"status-draft") ">
-                                           <strong>@(article.Status == "published" ? "已發布" : "草稿")</strong>
+                                           <span class="status-badge @(viewModel.Status=="published"?"status-published":"status-draft") ">
+                                           <strong>@(viewModel.Status == "published" ? "已發布" : "草稿")</strong>
                                            </span>
                                         </div>
                                         </td>
-                                    <td>@article.Views</td>
-                                    <td>@article.UpdatedAt.ToString("yyyy年M月d日 tt hh:mm", new CultureInfo("zh-TW"))</td>
+                                    <td>@viewModel.Views</td>
+                                    <td>@viewModel.UpdatedAt.ToString("yyyy年M月d日 tt hh:mm", new CultureInfo("zh-TW"))</td>
                                     <td>
                                         <div class="table-actions">
                                             <button class="action-btn btn-view" onclick="window.open('../client/article.html?id=${article.id}', '_blank')" title="預覽">

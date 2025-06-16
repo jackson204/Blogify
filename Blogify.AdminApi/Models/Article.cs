@@ -14,8 +14,8 @@ public class Article
     public string Author { get; set; }
 
     [Required]
-    public int Category { get; set; }
-
+    public int CategoryId { get; set; }
+    
     public string Tags { get; set; }
 
     [Range(1, int.MaxValue)]
@@ -34,4 +34,6 @@ public class Article
     public int Views { get; set; }
 
     public DateTime UpdatedAt { get; set; }
+    
+    public Category Category { get; set; } // 導覽屬性
 }

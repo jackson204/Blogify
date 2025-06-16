@@ -1,6 +1,7 @@
 using Blogify.AdminApi.Models;
 using Blogify.AdminApi.Models.Repository;
 using Blogify.AdminApi.Models.ViewModels;
+using Blogify.AdminApi.Views.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blogify.AdminApi.Controllers;
@@ -10,18 +11,27 @@ public class ArticleController : Controller
     public IActionResult List()
     {
         var articles = ArticleRepository.GetArticles();
-        return View(articles);
+        var categories = CategoryRepository.Categories();
+        var viewModel = articles.Select(a => new ArticleListItemViewModel
+        {
+            Id = a.Id,
+            Title = a.Title,
+            Excerpt = a.Excerpt,
+            Author = a.Author,
+            CategoryName = categories.FirstOrDefault(c => c.Id == a.CategoryId)?.Name,
+            Tags = a.Tags,
+            ReadTime = a.ReadTime,
+            Image = a.Image,
+            Status = a.Status,
+            Featured = a.Featured,
+            Views = a.Views,
+            UpdatedAt = a.UpdatedAt
+        }).ToList();
+        return View(viewModel);
     }
     public IActionResult Create()
     {
-        var category = new List<Category>
-        {
-            new() { Id = 1, Name = "前端開發" },
-            new() { Id = 2, Name = "後端開發" },
-            new() { Id = 3, Name = "資料庫" },
-            new() { Id = 4, Name = "DevOps" },
-            new() { Id = 5, Name = "行動開發" }
-        };
+        var category = CategoryRepository.Categories();
         return View(category);
     }
 
@@ -39,7 +49,7 @@ public class ArticleController : Controller
             Image = model.Image,
             Status = model.Status,
             Featured = model.Featured,
-            Category = model.Category
+            CategoryId = model.Category
         };
         return View();
     }
