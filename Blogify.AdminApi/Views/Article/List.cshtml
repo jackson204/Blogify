@@ -1,5 +1,8 @@
-@model IEnumerable<Article>
 
+@model IEnumerable<Article>
+@{
+    ViewData["Title"] = "文章管理";
+}
 <div id="articlesListView">
     <!-- 頁面標題 -->
     <div class="page-header">
@@ -11,10 +14,10 @@
         <div class="card-header">
             <h3 class="card-title">文章列表</h3>
             <div class="card-actions">
-                <button id="newArticleBtn" class="btn btn-primary">
+                <a class="btn btn-primary" asp-controller="Article" asp-action="Create">
                     <i class="icon-plus"></i>
                     新增文章
-                </button>
+                </a>
             </div>
         </div>
         <div class="card-body">
@@ -82,15 +85,38 @@
                                     <td>
                                         <input type="checkbox" class="select-article" value="@article.Id" />
                                     </td>
-                                    <td>@article.Title</td>
+                                    <td>
+                                        <div class="article-title-cell">
+                                            <strong>@article.Title</strong>
+                                            @if (article.Featured)
+                                            {
+                                                <span class="status-badge status-featured">精選</span>
+                                            }
+                                        </div>
+                                    </td>
                                     <td>@article.Author</td>
                                     <td>@article.Category</td>
-                                    <td>@(article.Status == "published" ? "已發布" : "草稿")</td>
-                                    <td>@article.Views</td>
-                                    <td>@article.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</td>
                                     <td>
-                                        <button class="btn btn-sm btn-primary" data-action="edit" data-id="@article.Id">編輯</button>
-                                        <button class="btn btn-sm btn-danger" data-action="delete" data-id="@article.Id">刪除</button>
+                                        <div class="category-name-cell">
+                                           <span class="status-badge @(article.Status=="published"?"status-published":"status-draft") ">
+                                           <strong>@(article.Status == "published" ? "已發布" : "草稿")</strong>
+                                           </span>
+                                        </div>
+                                        </td>
+                                    <td>@article.Views</td>
+                                    <td>@article.UpdatedAt.ToString("yyyy年M月d日 tt hh:mm", new CultureInfo("zh-TW"))</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="action-btn btn-view" onclick="window.open('../client/article.html?id=${article.id}', '_blank')" title="預覽">
+                                                <i class="icon-view"></i>
+                                            </button>
+                                            <button class="action-btn btn-edit" onclick="" title="編輯">
+                                                <i class="icon-edit"></i>
+                                            </button>
+                                            <button class="action-btn btn-delete" onclick="" title="刪除">
+                                                <i class="icon-delete"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -113,98 +139,3 @@
     </div>
 </div>
 
-@* <div id="articleEditView" class="d-none"> *@
-@*     <!-- 頁面標題 --> *@
-@*     <div class="page-header"> *@
-@*         <h2 class="page-title" id="editPageTitle">新增文章</h2> *@
-@*         <p class="page-subtitle">填寫文章資訊並發布</p> *@
-@*     </div> *@
-@*     <!-- 編輯表單 --> *@
-@*     <form id="articleForm" class="content-card"> *@
-@*         <div class="card-header"> *@
-@*             <h3 class="card-title">文章資訊</h3> *@
-@*             <div class="card-actions"> *@
-@*                 <button type="button" id="cancelEditBtn" class="btn btn-secondary"> *@
-@*                     <i class="icon-cancel"></i> *@
-@*                     取消 *@
-@*                 </button> *@
-@*                 <button type="submit" class="btn btn-primary"> *@
-@*                     <i class="icon-save"></i> *@
-@*                     儲存 *@
-@*                 </button> *@
-@*             </div> *@
-@*         </div> *@
-@*         <div class="card-body"> *@
-@*             <input type="hidden" id="articleId"> *@
-@*             <div class="form-row"> *@
-@*                 <div class="form-group"> *@
-@*                     <label for="articleTitle" class="form-label">文章標題 *</label> *@
-@*                     <input type="text" id="articleTitle" name="title" class="form-control" required> *@
-@*                 </div> *@
-@*             </div> *@
-@*             <div class="form-row"> *@
-@*                 <div class="form-group"> *@
-@*                     <label for="articleExcerpt" class="form-label">文章摘要</label> *@
-@*                     <textarea id="articleExcerpt" name="excerpt" class="form-control" rows="3" placeholder="簡短描述文章內容..."></textarea> *@
-@*                 </div> *@
-@*             </div> *@
-@*             <div class="form-row"> *@
-@*                 <div class="form-group"> *@
-@*                     <label for="articleAuthor" class="form-label">作者</label> *@
-@*                     <input type="text" id="articleAuthor" name="author" class="form-control" value="管理員"> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <label for="articleCategory" class="form-label">分類 *</label> *@
-@*                     <select id="articleCategory" name="category" class="form-control" required> *@
-@*                         <option value="">請選擇分類</option> *@
-@*                     </select> *@
-@*                 </div> *@
-@*             </div> *@
-@*             <div class="form-row"> *@
-@*                 <div class="form-group"> *@
-@*                     <label for="articleTags" class="form-label">標籤</label> *@
-@*                     <input type="text" id="articleTags" name="tags" class="form-control" placeholder="用逗號分隔多個標籤"> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <label for="articleReadTime" class="form-label">閱讀時間（分鐘）</label> *@
-@*                     <input type="number" id="articleReadTime" name="readTime" class="form-control" min="1" value="5"> *@
-@*                 </div> *@
-@*             </div> *@
-@*             <div class="form-row"> *@
-@*                 <div class="form-group"> *@
-@*                     <label for="articleImage" class="form-label">文章圖片 URL</label> *@
-@*                     <input type="url" id="articleImage" name="image" class="form-control" placeholder="https://example.com/image.jpg"> *@
-@*                 </div> *@
-@*             </div> *@
-@*             <div class="form-row"> *@
-@*                 <div class="form-group"> *@
-@*                     <label for="articleStatus" class="form-label">狀態</label> *@
-@*                     <select id="articleStatus" name="status" class="form-control"> *@
-@*                         <option value="draft">草稿</option> *@
-@*                         <option value="published">已發布</option> *@
-@*                     </select> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <label class="checkbox-label"> *@
-@*                         <input type="checkbox" id="articleFeatured" name="featured"> *@
-@*                         <span class="checkmark"></span> *@
-@*                         設為精選文章 *@
-@*                     </label> *@
-@*                 </div> *@
-@*             </div> *@
-@*             <div class="form-group"> *@
-@*                 <label for="articleContent" class="form-label">文章內容 *</label> *@
-@*                 <div class="editor-container"> *@
-@*                     <div class="editor-toolbar"> *@
-@*                         <button type="button" class="editor-btn" data-action="bold">粗體</button> *@
-@*                         <button type="button" class="editor-btn" data-action="italic">斜體</button> *@
-@*                         <button type="button" class="editor-btn" data-action="heading">標題</button> *@
-@*                         <button type="button" class="editor-btn" data-action="code">程式碼</button> *@
-@*                         <button type="button" class="editor-btn" data-action="link">連結</button> *@
-@*                     </div> *@
-@*                     <textarea id="articleContent" name="content" class="editor-content" placeholder="在此輸入文章內容..." required></textarea> *@
-@*                 </div> *@
-@*             </div> *@
-@*         </div> *@
-@*     </form> *@
-@* </div> *@
