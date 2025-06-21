@@ -89,4 +89,8 @@
       <None Include="wwwroot\shared\js\utils.js" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.6" />
+    </ItemGroup>
+
 </Project>
