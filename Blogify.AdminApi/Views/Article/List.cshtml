@@ -99,7 +99,7 @@
                                     <td>
                                         <div class="category-name-cell">
                                            <span class="status-badge @(viewModel.Status=="published"?"status-published":"status-draft") ">
-                                           <strong>@(viewModel.Status == "published" ? "已發布" : "草稿")</strong>
+                                           <strong>@viewModel.StatusString</strong>
                                            </span>
                                         </div>
                                         </td>

@@ -2,6 +2,12 @@ namespace Blogify.AdminApi.Views.ViewModel;
 
 public class ArticleListItemViewModel
 {
+    public string StatusString => Status switch
+    {
+        "published" => "已發佈",
+        "draft" => "草稿",
+        _ => "未知狀態"
+    };
     public int? Id { get; set; }
 
     public string Title { get; set; }
