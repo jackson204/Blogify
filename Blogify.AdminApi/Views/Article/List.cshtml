@@ -110,9 +110,9 @@
                                             <button class="action-btn btn-view" onclick="window.open('../client/article.html?id=${article.id}', '_blank')" title="預覽">
                                                 <i class="icon-view"></i>
                                             </button>
-                                            <button class="action-btn btn-edit" onclick="" title="編輯">
+                                            <a class="action-btn btn-edit" asp-action="Edit" asp-controller="Article" asp-route-id="@viewModel.Id" title="編輯">
                                                 <i class="icon-edit"></i>
-                                            </button>
+                                            </a>
                                             <button class="action-btn btn-delete" onclick="" title="刪除">
                                                 <i class="icon-delete"></i>
                                             </button>

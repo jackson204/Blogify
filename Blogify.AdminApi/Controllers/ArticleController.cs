@@ -64,4 +64,61 @@ public class ArticleController : Controller
         _articleRepository.Add(article);
         return RedirectToAction(nameof(List));
     }
+
+    public IActionResult Edit(int id)
+    {
+        var article = _articleRepository.GetArticleById(id);
+        if (article == null)
+        {
+            return NotFound();
+        }
+
+        var viewModel = new ArticleViewModel
+        {
+            Id = article.Id,
+            Title = article.Title,
+            Content = article.Content,
+            Excerpt = article.Excerpt,
+            Author = article.Author,
+            Tags = article.Tags,
+            ReadTime = article.ReadTime,
+            Image = article.Image,
+            Status = article.Status,
+            Featured = article.Featured,
+            Category = article.CategoryId
+        };
+
+        ViewBag.Categories = CategoryRepository.Categories();
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(int id, ArticleViewModel model)
+    {
+        if (id != model.Id)
+        {
+            return NotFound();
+        }
+
+        var article = _articleRepository.GetArticleById(id);
+        if (article == null)
+        {
+            return NotFound();
+        }
+
+        article.Title = model.Title;
+        article.Content = model.Content;
+        article.Excerpt = model.Excerpt;
+        article.Author = model.Author;
+        article.Tags = model.Tags;
+        article.ReadTime = model.ReadTime;
+        article.Image = model.Image;
+        article.Status = model.Status;
+        article.Featured = model.Featured;
+        article.CategoryId = model.Category;
+        article.UpdatedAt = DateTime.Now;
+
+        _articleRepository.Update(article);
+        return RedirectToAction(nameof(List));
+    }
 }

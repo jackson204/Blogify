@@ -22,4 +22,17 @@ public class ArticleRepository
         _context.Articles.Add(article);
         _context.SaveChanges();
     }
+
+    public Article? GetArticleById(int id)
+    {
+        return _context.Articles
+            .Include(a => a.Category)
+            .FirstOrDefault(a => a.Id == id);
+    }
+
+    public void Update(Article article)
+    {
+        _context.Articles.Update(article);
+        _context.SaveChanges();
+    }
 }
