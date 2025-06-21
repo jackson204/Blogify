@@ -1,4 +1,4 @@
-namespace Blogify.AdminApi.Views.ViewModel;
+namespace Blogify.AdminApi.ViewModel;
 
 public class ArticleListItemViewModel
 {

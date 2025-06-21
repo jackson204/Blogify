@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using Blogify.AdminApi.Models;
 
-namespace Blogify.AdminApi.Models.ViewModels
+namespace Blogify.AdminApi.ViewModel
 {
     public class ArticleViewModel
     {

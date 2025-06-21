@@ -1,7 +1,6 @@
 using Blogify.AdminApi.Models;
 using Blogify.AdminApi.Models.Repository;
-using Blogify.AdminApi.Models.ViewModels;
-using Blogify.AdminApi.Views.ViewModel;
+using Blogify.AdminApi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blogify.AdminApi.Controllers;
