@@ -121,4 +121,17 @@ public class ArticleController : Controller
         _articleRepository.Update(article);
         return RedirectToAction(nameof(List));
     }
+
+    [HttpPost]
+    public IActionResult Delete(int id)
+    {
+        var article = _articleRepository.GetArticleById(id);
+        if (article == null)
+        {
+            return NotFound();
+        }
+
+        _articleRepository.Delete(article);
+        return RedirectToAction(nameof(List));
+    }
 }

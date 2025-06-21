@@ -35,4 +35,10 @@ public class ArticleRepository
         _context.Articles.Update(article);
         _context.SaveChanges();
     }
+
+    public void Delete(Article article)
+    {
+        _context.Articles.Remove(article);
+        _context.SaveChanges();
+    }
 }
