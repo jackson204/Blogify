@@ -8,6 +8,7 @@ public class ArticleListItemViewModel
         "draft" => "草稿",
         _ => "未知狀態"
     };
+
     public int? Id { get; set; }
 
     public string Title { get; set; }
@@ -31,4 +32,6 @@ public class ArticleListItemViewModel
     public int Views { get; set; }
 
     public DateTime UpdatedAt { get; set; }
+
+    public string StatusCheck => Status == "published" ? "status-published" : "status-draft";
 }
