@@ -7,27 +7,36 @@ namespace Blogify.AdminApi.Controllers;
 
 public class ArticleController : Controller
 {
+    private readonly ArticleRepository _articleRepository;
+
+    public ArticleController(ArticleRepository articleRepository)
+    {
+        _articleRepository = articleRepository;
+    }
+
     public IActionResult List()
     {
-        var articles = ArticleRepository.GetArticles();
-        var categories = CategoryRepository.Categories();
-        var viewModel = articles.Select(a => new ArticleListItemViewModel
-        {
-            Id = a.Id,
-            Title = a.Title,
-            Excerpt = a.Excerpt,
-            Author = a.Author,
-            CategoryName = categories.FirstOrDefault(c => c.Id == a.CategoryId)?.Name,
-            Tags = a.Tags,
-            ReadTime = a.ReadTime,
-            Image = a.Image,
-            Status = a.Status,
-            Featured = a.Featured,
-            Views = a.Views,
-            UpdatedAt = a.UpdatedAt
-        }).ToList();
+        var viewModel = _articleRepository.GetArticles()
+            .Select(article => new ArticleListItemViewModel
+            {
+                Id = article.Id,
+                Title = article.Title,
+                Excerpt = article.Excerpt,
+                Author = article.Author,
+                CategoryName = article.Category?.Name,
+                Tags = article.Tags,
+                ReadTime = article.ReadTime,
+                Image = article.Image,
+                Status = article.Status,
+                Featured = article.Featured,
+                Views = article.Views,
+                UpdatedAt = article.UpdatedAt
+            })
+            .ToList();
+
         return View(viewModel);
     }
+
     public IActionResult Create()
     {
         var category = CategoryRepository.Categories();
@@ -48,8 +57,11 @@ public class ArticleController : Controller
             Image = model.Image,
             Status = model.Status,
             Featured = model.Featured,
-            CategoryId = model.Category
+            CategoryId = model.Category,
+            UpdatedAt = DateTime.Now
         };
-        return View();
+
+        _articleRepository.Add(article);
+        return RedirectToAction(nameof(List));
     }
 }

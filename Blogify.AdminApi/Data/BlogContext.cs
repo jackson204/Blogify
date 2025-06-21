@@ -5,16 +5,16 @@ namespace Blogify.AdminApi.Data
 {
     public class BlogContext : DbContext
     {
+        public BlogContext(DbContextOptions<BlogContext> options) : base(options)
+        {
+        }
+
         public DbSet<Article> Articles { get; set; }
         public DbSet<Category> Categories { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseInMemoryDatabase("BlogDb");
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Article>()
-                .HasOne<Category>()
+        {            modelBuilder.Entity<Article>()
+                .HasOne(a => a.Category)
                 .WithMany()
                 .HasForeignKey(a => a.CategoryId);
         }
