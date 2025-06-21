@@ -39,8 +39,9 @@ public class ArticleController : Controller
 
     public IActionResult Create()
     {
-        var category = CategoryRepository.Categories();
-        return View(category);
+        ViewBag.Action = nameof(Create);
+        ViewBag.Categories = CategoryRepository.Categories();
+        return View(new ArticleViewModel());
     }
 
     [HttpPost]
@@ -73,6 +74,9 @@ public class ArticleController : Controller
             return NotFound();
         }
 
+        ViewBag.Action = nameof(Edit);
+        ViewBag.Categories = CategoryRepository.Categories();
+
         var viewModel = new ArticleViewModel
         {
             Id = article.Id,
@@ -88,7 +92,6 @@ public class ArticleController : Controller
             Category = article.CategoryId
         };
 
-        ViewBag.Categories = CategoryRepository.Categories();
         return View(viewModel);
     }
 

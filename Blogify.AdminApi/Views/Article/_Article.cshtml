@@ -1,0 +1,103 @@
+@model Blogify.AdminApi.ViewModel.ArticleViewModel
+
+<form method="post" id="articleForm" class="content-card" action="@ViewBag.Action">
+    <div class="card-header">
+        <h3 class="card-title">文章資訊</h3>
+        <div class="card-actions">
+            <a href="@Url.Action("List", "Article")" id="cancelEditBtn" class="btn btn-secondary">
+                <i class="icon-cancel"></i>
+                取消
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="icon-save"></i>
+                儲存
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.Action == "Edit")
+        {
+            <input type="hidden" asp-for="Id" />
+        }
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="articleTitle" class="form-label">文章標題 *</label>
+                <input type="text" id="articleTitle" asp-for="Title" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="articleExcerpt" class="form-label">文章摘要</label>
+                <textarea id="articleExcerpt" asp-for="Excerpt" class="form-control" rows="3" placeholder="簡短描述文章內容..."></textarea>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="articleAuthor" class="form-label">作者</label>
+                <input type="text" id="articleAuthor" asp-for="Author" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="articleCategory" class="form-label">分類 *</label>
+                <select id="articleCategory" asp-for="Category" class="form-control" required>
+                    <option value="">請選擇分類</option>
+                    @foreach (var cat in ViewBag.Categories)
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="articleTags" class="form-label">標籤</label>
+                <input type="text" id="articleTags" asp-for="Tags" class="form-control" placeholder="用逗號分隔多個標籤">
+            </div>
+            <div class="form-group">
+                <label for="articleReadTime" class="form-label">閱讀時間（分鐘）</label>
+                <input type="number" id="articleReadTime" asp-for="ReadTime" class="form-control" min="1">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="articleImage" class="form-label">文章圖片 URL</label>
+                <input type="url" id="articleImage" asp-for="Image" class="form-control" placeholder="https://example.com/image.jpg">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="articleStatus" class="form-label">狀態</label>
+                <select id="articleStatus" asp-for="Status" class="form-control">
+                    <option value="draft">草稿</option>
+                    <option value="published">已發布</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="articleFeatured" asp-for="Featured">
+                    <span class="checkmark"></span>
+                    設為精選文章
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="articleContent" class="form-label">文章內容 *</label>
+            <div class="editor-container">
+                <div class="editor-toolbar">
+                    <button type="button" class="editor-btn" data-action="bold">粗體</button>
+                    <button type="button" class="editor-btn" data-action="italic">斜體</button>
+                    <button type="button" class="editor-btn" data-action="heading">標題</button>
+                    <button type="button" class="editor-btn" data-action="code">程式碼</button>
+                    <button type="button" class="editor-btn" data-action="link">連結</button>
+                </div>
+                <textarea id="articleContent" asp-for="Content" class="form-control editor-content" rows="15" required></textarea>
+            </div>
+        </div>
+    </div>
+</form>
