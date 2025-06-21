@@ -22,7 +22,7 @@ public class Article
     public int ReadTime { get; set; } = 5;
 
     [Url]
-    public string Image { get; set; }
+    public string? Image { get; set; }
 
     public string Status { get; set; } = "draft";
 
