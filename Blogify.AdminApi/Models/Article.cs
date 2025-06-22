@@ -9,14 +9,14 @@ public class Article
     [Required]
     public string Title { get; set; }
 
-    public string Excerpt { get; set; }
+    public string? Excerpt { get; set; }
 
     public string Author { get; set; }
 
     [Required]
     public int CategoryId { get; set; }
     
-    public string Tags { get; set; }
+    public string? Tags { get; set; }
 
     [Range(1, int.MaxValue)]
     public int ReadTime { get; set; } = 5;

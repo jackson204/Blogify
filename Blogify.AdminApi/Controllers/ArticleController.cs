@@ -53,9 +53,9 @@ public class ArticleController : Controller
         {
             Title = model.Title,
             Content = model.Content,
-            Excerpt = model.Excerpt,
-            Author = model.Author,
-            Tags = model.Tags,
+            Excerpt = model.Excerpt ?? string.Empty, // 避免 Excerpt 為 null
+            Author = model.Author ?? string.Empty,   // 修正：避免 Author 為 null
+            Tags = model.Tags ?? string.Empty,       // 避免 Tags 為 null
             ReadTime = model.ReadTime,
             Image = model.Image,
             Status = model.Status,
@@ -113,9 +113,9 @@ public class ArticleController : Controller
 
         article.Title = model.Title;
         article.Content = model.Content;
-        article.Excerpt = model.Excerpt;
-        article.Author = model.Author;
-        article.Tags = model.Tags;
+        article.Excerpt = model.Excerpt ?? string.Empty; // 避免 Excerpt 為 null
+        article.Author = model.Author ?? string.Empty;   // 修正：避免 Author 為 null
+        article.Tags = model.Tags ?? string.Empty;       // 避免 Tags 為 null
         article.ReadTime = model.ReadTime;
         article.Image = model.Image;
         article.Status = model.Status;
