@@ -34,6 +34,8 @@ public class ArticleController : Controller
             })
             .ToList();
 
+        ViewBag.Categories = CategoryRepository.Categories();
+
         return View(viewModel);
     }
 

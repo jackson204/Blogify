@@ -1,4 +1,3 @@
-
 @model List<Blogify.AdminApi.ViewModel.ArticleListItemViewModel>
 @{
     ViewData["Title"] = "文章管理";
@@ -36,6 +35,13 @@
                 <div class="filter-group">
                     <select id="categoryFilter" class="form-control">
                         <option value="">所有分類</option>
+                        @if (ViewBag.Categories != null)
+                        {
+                            foreach (var cat in ViewBag.Categories)
+                            {
+                                <option value="@cat.Id">@cat.Name</option>
+                            }
+                        }
                     </select>
                 </div>
                 <div class="filter-group">
@@ -139,4 +145,3 @@
         </div>
     </div>
 </div>
-
