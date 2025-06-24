@@ -103,7 +103,7 @@ public class ArticleController : Controller
 
     public IActionResult Create()
     {
-        ViewBag.Action = nameof(Create);
+        ViewBag.Action = Url.Action("Create", "Article");
         ViewBag.Categories = CategoryRepository.Categories();
         return View(new ArticleViewModel());
     }
@@ -137,8 +137,7 @@ public class ArticleController : Controller
         {
             return NotFound();
         }
-
-        ViewBag.Action = nameof(Edit);
+        ViewBag.Action = Url.Action("Edit", "Article", new { id = id });
         ViewBag.Categories = CategoryRepository.Categories();
 
         var viewModel = new ArticleViewModel
