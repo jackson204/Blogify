@@ -1,4 +1,4 @@
-@model List<Blogify.AdminApi.ViewModel.ArticleListItemViewModel>
+@model Blogify.AdminApi.ViewModel.ArticleListViewModel
 @{
     ViewData["Title"] = "文章管理";
 }
@@ -13,7 +13,14 @@
         <div class="card-header">
             <h3 class="card-title">文章列表</h3>
             <div class="card-actions">
-                <a class="btn btn-primary" asp-controller="Article" asp-action="Create">
+                <a class="btn btn-primary" 
+                   href="@Url.Action("Create", "Article", new {
+                       search = ViewBag.CurrentSearch,
+                       status = ViewBag.CurrentStatus,
+                       category = ViewBag.CurrentCategory,
+                       sort = ViewBag.CurrentSort,
+                       page = ViewBag.CurrentPage
+                   })">
                     <i class="icon-plus"></i>
                     新增文章
                 </a>
@@ -24,7 +31,7 @@
             <form  asp-controller="Article" asp-action="List" method="get">
                 <div class="filter-toolbar">
                     <div class="filter-group">
-                        <input type="text" id="searchInput" name="search" class="form-control"
+                        <input type="text" value="@ViewBag.CurrentSearch" id="searchInput" name="search" class="form-control"
                                placeholder="搜尋文章標題、內容或作者...">
                     </div>
                     <div class="filter-group">
@@ -48,10 +55,10 @@
                     </div>
                     <div class="filter-group">
                         <select id="sortFilter" name="sort" class="form-control">
-                            <option value="updatedAt">更新時間</option>
-                            <option value="title">標題</option>
-                            <option value="author">作者</option>
-                            <option value="views">瀏覽數</option>
+                            <option value="UpdatedAt">更新時間</option>
+                            <option value="Title">標題</option>
+                            <option value="Author">作者</option>
+                            <option value="Views">瀏覽數</option>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -92,9 +99,9 @@
                     </tr>
                     </thead>
                     <tbody id="articlesTableBody">
-                    @if (Model.Any())
+                    @if (Model.Articles.Any())
                     {
-                        foreach (var viewModel in Model)
+                        foreach (var viewModel in Model.Articles)
                         {
                             <tr>
                                 <td>
@@ -127,12 +134,24 @@
                                                 title="預覽">
                                             <i class="icon-view"></i>
                                         </button>
-                                        <a class="action-btn btn-edit" asp-action="Edit" asp-controller="Article"
-                                           asp-route-id="@viewModel.Id" title="編輯">
+                                        <a class="action-btn btn-edit" 
+                                           href="@Url.Action("Edit", "Article", new { 
+                                               id = viewModel.Id,
+                                               search = ViewBag.CurrentSearch,
+                                               status = ViewBag.CurrentStatus,
+                                               category = ViewBag.CurrentCategory,
+                                               sort = ViewBag.CurrentSort,
+                                               page = ViewBag.CurrentPage
+                                           })" title="編輯">
                                             <i class="icon-edit"></i>
                                         </a>
                                         <form asp-action="Delete" asp-controller="Article" asp-route-id="@viewModel.Id"
                                               method="post" style="display: inline;">
+                                            <input type="hidden" name="search" value="@ViewBag.CurrentSearch" />
+                                            <input type="hidden" name="status" value="@ViewBag.CurrentStatus" />
+                                            <input type="hidden" name="category" value="@ViewBag.CurrentCategory" />
+                                            <input type="hidden" name="sort" value="@ViewBag.CurrentSort" />
+                                            <input type="hidden" name="page" value="@ViewBag.CurrentPage" />
                                             <button type="submit" class="action-btn btn-delete"
                                                     onclick="return confirm('確定要刪除這篇文章嗎？')" title="刪除">
                                                 <i class="icon-delete"></i>
@@ -156,7 +175,102 @@
                 </table>
             </div>
             <!-- 分頁 -->
-            <div id="paginationContainer" class="pagination-container"></div>
+            <div id="paginationContainer" class="pagination-container">
+                @if (Model.TotalPages > 1)
+                {
+                    <nav aria-label="文章列表分頁">
+                        <ul class="pagination">
+                            <!-- 上一頁 -->
+                            @if (Model.HasPreviousPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" 
+                                       href="@Url.Action("List", new { 
+                                           search = ViewBag.CurrentSearch, 
+                                           status = ViewBag.CurrentStatus, 
+                                           category = ViewBag.CurrentCategory, 
+                                           sort = ViewBag.CurrentSort, 
+                                           page = Model.Filter.Page - 1 
+                                       })">上一頁</a>
+                                </li>
+                            }
+                            
+                            <!-- 頁碼 -->
+                            @{
+                                int startPage = Math.Max(1, Model.Filter.Page - 2);
+                                int endPage = Math.Min(Model.TotalPages, Model.Filter.Page + 2);
+                            }
+                            
+                            @for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li class="page-item @(i == Model.Filter.Page ? "active" : "")">
+                                    <a class="page-link" 
+                                       href="@Url.Action("List", new { 
+                                           search = ViewBag.CurrentSearch, 
+                                           status = ViewBag.CurrentStatus, 
+                                           category = ViewBag.CurrentCategory, 
+                                           sort = ViewBag.CurrentSort, 
+                                           page = i 
+                                       })">@i</a>
+                                </li>
+                            }
+                            
+                            <!-- 下一頁 -->
+                            @if (Model.HasNextPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" 
+                                       href="@Url.Action("List", new { 
+                                           search = ViewBag.CurrentSearch, 
+                                           status = ViewBag.CurrentStatus, 
+                                           category = ViewBag.CurrentCategory, 
+                                           sort = ViewBag.CurrentSort, 
+                                           page = Model.Filter.Page + 1 
+                                       })">下一頁</a>
+                                </li>
+                            }
+                        </ul>
+                        
+                        <!-- 分頁資訊 -->
+                        <div class="pagination-info">
+                            顯示第 @((Model.Filter.Page - 1) * Model.Filter.PageSize + 1) 到 
+                            @(Math.Min(Model.Filter.Page * Model.Filter.PageSize, Model.TotalCount)) 筆，
+                            共 @Model.TotalCount 筆資料
+                        </div>
+                    </nav>
+                }
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+// 保持篩選條件的選中狀態
+document.addEventListener('DOMContentLoaded', function() {
+    // 設定搜尋框的值
+    const searchValue = '@ViewBag.CurrentSearch';
+    if (searchValue) {
+        document.getElementById('searchInput').value = searchValue;
+    }
+    
+    // 設定狀態下拉選單
+    const statusValue = '@ViewBag.CurrentStatus';
+    if (statusValue) {
+        document.getElementById('statusFilter').value = statusValue;
+    }
+    
+    // 設定分類下拉選單
+    const categoryValue = '@ViewBag.CurrentCategory';
+    if (categoryValue) {
+        document.getElementById('categoryFilter').value = categoryValue;
+    }
+    
+    // 設定排序下拉選單
+    const sortValue = '@ViewBag.CurrentSort';
+    if (sortValue && sortValue !== '') {
+        document.getElementById('sortFilter').value = sortValue;
+    } else {
+        document.getElementById('sortFilter').value = 'UpdatedAt';
+    }
+});
+</script>

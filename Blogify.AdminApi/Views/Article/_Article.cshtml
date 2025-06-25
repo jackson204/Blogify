@@ -1,10 +1,32 @@
 @model Blogify.AdminApi.ViewModel.ArticleViewModel
 
 <form method="post" id="articleForm" class="content-card" action="@ViewBag.Action">
+    <!-- 保持查詢條件的隱藏欄位 -->
+    @if (!string.IsNullOrEmpty(Context.Request.Query["search"]))
+    {
+        <input type="hidden" name="search" value="@Context.Request.Query["search"]" />
+    }
+    @if (!string.IsNullOrEmpty(Context.Request.Query["status"]))
+    {
+        <input type="hidden" name="status" value="@Context.Request.Query["status"]" />
+    }
+    @if (!string.IsNullOrEmpty(Context.Request.Query["category"]))
+    {
+        <input type="hidden" name="category" value="@Context.Request.Query["category"]" />
+    }
+    @if (!string.IsNullOrEmpty(Context.Request.Query["sort"]))
+    {
+        <input type="hidden" name="sort" value="@Context.Request.Query["sort"]" />
+    }
+    @if (!string.IsNullOrEmpty(Context.Request.Query["page"]))
+    {
+        <input type="hidden" name="page" value="@Context.Request.Query["page"]" />
+    }
+    
     <div class="card-header">
         <h3 class="card-title">文章資訊</h3>
         <div class="card-actions">
-            <a href="@Url.Action("List", "Article")" id="cancelEditBtn" class="btn btn-secondary">
+            <a href="@(ViewBag.CancelUrl ?? Url.Action("List", "Article"))" id="cancelEditBtn" class="btn btn-secondary">
                 <i class="icon-cancel"></i>
                 取消
             </a>

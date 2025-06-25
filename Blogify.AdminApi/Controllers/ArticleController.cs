@@ -79,37 +79,64 @@ public class ArticleController : Controller
         var pagedArticles = articles
             .Skip((filter.Page - 1) * filter.PageSize)
             .Take(filter.PageSize);
-        var viewModel = pagedArticles
+            
+        var articleViewModels = pagedArticles
             .Select(article => new ArticleListItemViewModel
             {
                 Id = article.Id,
-                Title = article.Title,
-                Excerpt = article.Excerpt,
-                Author = article.Author,
+                Title = article.Title ?? string.Empty,
+                Excerpt = article.Excerpt ?? string.Empty,
+                Author = article.Author ?? string.Empty,
                 CategoryName = article.Category?.Name,
-                Tags = article.Tags,
+                Tags = article.Tags ?? string.Empty,
                 ReadTime = article.ReadTime,
-                Image = article.Image,
-                Status = article.Status,
+                Image = article.Image ?? string.Empty,
+                Status = article.Status ?? string.Empty,
                 Featured = article.Featured,
                 Views = article.Views,
                 UpdatedAt = article.UpdatedAt
             })
             .ToList();
+            
+        // 建立完整的視圖模型
+        var viewModel = new ArticleListViewModel
+        {
+            Articles = articleViewModels,
+            Filter = filter,
+            TotalCount = totalCount,
+            TotalPages = totalPages
+        };
+        
+        // 將查詢條件傳遞給 View 以保持表單狀態
         ViewBag.Categories = CategoryRepository.Categories();
+        ViewBag.CurrentSearch = filter.SearchKeyword;
+        ViewBag.CurrentStatus = filter.Status;
+        ViewBag.CurrentCategory = filter.CategoryId;
+        ViewBag.CurrentSort = filter.SortBy;
+        ViewBag.CurrentPage = filter.Page;
 
         return View(viewModel);
     }
 
-    public IActionResult Create()
+    public IActionResult Create(string? search = null, string? status = null, int? category = null, string? sort = null, int page = 1)
     {
         ViewBag.Action = Url.Action("Create", "Article");
         ViewBag.Categories = CategoryRepository.Categories();
+        
+        // 建立取消按鈕的返回 URL，包含查詢參數
+        ViewBag.CancelUrl = Url.Action("List", "Article", new { 
+            search = search, 
+            status = status, 
+            category = category, 
+            sort = sort, 
+            page = page 
+        });
+        
         return View(new ArticleViewModel());
     }
 
     [HttpPost]
-    public IActionResult Create(ArticleViewModel model)
+    public IActionResult Create(ArticleViewModel model, string? search = null, string? status = null, int? category = null, string? sort = null, int page = 1)
     {
         var article = new Article()
         {
@@ -127,10 +154,18 @@ public class ArticleController : Controller
         };
 
         _articleRepository.Add(article);
-        return RedirectToAction(nameof(List));
+        
+        // 保持查詢條件
+        return RedirectToAction(nameof(List), new { 
+            search = search, 
+            status = status, 
+            category = category, 
+            sort = sort, 
+            page = page 
+        });
     }
 
-    public IActionResult Edit(int id)
+    public IActionResult Edit(int id, string? search = null, string? status = null, int? category = null, string? sort = null, int page = 1)
     {
         var article = _articleRepository.GetArticleById(id);
         if (article == null)
@@ -139,17 +174,26 @@ public class ArticleController : Controller
         }
         ViewBag.Action = Url.Action("Edit", "Article", new { id = id });
         ViewBag.Categories = CategoryRepository.Categories();
+        
+        // 建立取消按鈕的返回 URL，包含查詢參數
+        ViewBag.CancelUrl = Url.Action("List", "Article", new { 
+            search = search, 
+            status = status, 
+            category = category, 
+            sort = sort, 
+            page = page 
+        });
 
         var viewModel = new ArticleViewModel
         {
             Id = article.Id,
             Title = article.Title,
             Content = article.Content,
-            Excerpt = article.Excerpt,
+            Excerpt = article.Excerpt ?? string.Empty,
             Author = article.Author,
-            Tags = article.Tags,
+            Tags = article.Tags ?? string.Empty,
             ReadTime = article.ReadTime,
-            Image = article.Image,
+            Image = article.Image ?? string.Empty,
             Status = article.Status,
             Featured = article.Featured,
             Category = article.CategoryId
@@ -159,7 +203,7 @@ public class ArticleController : Controller
     }
 
     [HttpPost]
-    public IActionResult Edit(int id, ArticleViewModel model)
+    public IActionResult Edit(int id, ArticleViewModel model, string? search = null, string? status = null, int? category = null, string? sort = null, int page = 1)
     {
         if (id != model.Id)
         {
@@ -178,18 +222,26 @@ public class ArticleController : Controller
         article.Author = model.Author ?? string.Empty;   // 修正：避免 Author 為 null
         article.Tags = model.Tags ?? string.Empty;       // 避免 Tags 為 null
         article.ReadTime = model.ReadTime;
-        article.Image = model.Image;
+        article.Image = model.Image ?? string.Empty;
         article.Status = model.Status;
         article.Featured = model.Featured;
         article.CategoryId = model.Category;
         article.UpdatedAt = DateTime.Now;
 
         _articleRepository.Update(article);
-        return RedirectToAction(nameof(List));
+        
+        // 保持查詢條件
+        return RedirectToAction(nameof(List), new { 
+            search = search, 
+            status = status, 
+            category = category, 
+            sort = sort, 
+            page = page 
+        });
     }
 
     [HttpPost]
-    public IActionResult Delete(int id)
+    public IActionResult Delete(int id, string? search = null, string? status = null, int? category = null, string? sort = null, int page = 1)
     {
         var article = _articleRepository.GetArticleById(id);
         if (article == null)
@@ -198,6 +250,40 @@ public class ArticleController : Controller
         }
 
         _articleRepository.Delete(article);
-        return RedirectToAction(nameof(List));
+        
+        // 保持查詢條件
+        return RedirectToAction(nameof(List), new { 
+            search = search, 
+            status = status, 
+            category = category, 
+            sort = sort, 
+            page = page 
+        });
+    }
+
+    /// <summary>
+    /// 取得當前的篩選參數，用於保持查詢狀態
+    /// </summary>
+    /// <returns>包含篩選參數的匿名物件</returns>
+    private object GetFilterParameters()
+    {
+        var parameters = new Dictionary<string, object>();
+        
+        if (!string.IsNullOrEmpty(Request.Query["search"]))
+            parameters["search"] = Request.Query["search"].ToString();
+            
+        if (!string.IsNullOrEmpty(Request.Query["status"]))
+            parameters["status"] = Request.Query["status"].ToString();
+            
+        if (!string.IsNullOrEmpty(Request.Query["category"]))
+            parameters["category"] = Request.Query["category"].ToString();
+            
+        if (!string.IsNullOrEmpty(Request.Query["sort"]))
+            parameters["sort"] = Request.Query["sort"].ToString();
+            
+        if (!string.IsNullOrEmpty(Request.Query["page"]))
+            parameters["page"] = Request.Query["page"].ToString();
+            
+        return parameters;
     }
 }
