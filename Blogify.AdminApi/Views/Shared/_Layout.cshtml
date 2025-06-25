@@ -23,13 +23,13 @@
             <nav>
                 <ul class="sidebar-menu">
                     <li>
-                        <a href="@Url.Content("~/admin/index.html")" class="active">
+                        <a href="@Url.Content("~/admin/index.html")" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
                             <i class="icon-dashboard"></i>
                             <span>儀表板</span>
                         </a>
                     </li>
                     <li>
-                        <a href="@Url.Content("~/admin/articles.html")">
+                        <a href="/admin/Article/List" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Article" ? "active" : "")">
                             <i class="icon-article"></i>
                             <span>文章管理</span>
                         </a>

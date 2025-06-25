@@ -21,9 +21,12 @@ class AdminManager {
         
         if (currentPath.includes('index.html') || currentPath.endsWith('/admin/')) {
             await this.initDashboard();
-        } else if (currentPath.includes('articles.html')) {
+        } else if (currentPath.includes('articles.html') || currentPath.includes('/admin/Article/')) {
             await this.initArticlesPage();
+        } else if (currentPath.includes('categories.html')) {
+            await this.initCategoriesPage();
         }
+        // 如果是其他頁面，只綁定全域事件，不執行特定初始化
         
         this.bindGlobalEvents();
     }
@@ -122,7 +125,7 @@ class AdminManager {
                     <div class="recent-article-item">
                         <div class="article-info">
                             <h4 class="article-title">
-                                <a href="articles.html?edit=${article.id}">${article.title}</a>
+                                <a href="/admin/Article/Edit/${article.id}">${article.title}</a>
                             </h4>
                             <div class="article-meta">
                                 <span class="status-badge status-${article.status}">${this.getStatusText(article.status)}</span>
@@ -600,8 +603,8 @@ class AdminManager {
 
         // 更新 URL
         const newURL = article ? 
-            `articles.html?edit=${article.id}` : 
-            'articles.html?action=new';
+            `/admin/Article/Edit/${article.id}` : 
+            '/admin/Article/Create';
         window.history.pushState({}, '', newURL);
     }
 
