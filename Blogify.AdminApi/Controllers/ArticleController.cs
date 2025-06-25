@@ -260,30 +260,4 @@ public class ArticleController : Controller
             page = page 
         });
     }
-
-    /// <summary>
-    /// 取得當前的篩選參數，用於保持查詢狀態
-    /// </summary>
-    /// <returns>包含篩選參數的匿名物件</returns>
-    private object GetFilterParameters()
-    {
-        var parameters = new Dictionary<string, object>();
-        
-        if (!string.IsNullOrEmpty(Request.Query["search"]))
-            parameters["search"] = Request.Query["search"].ToString();
-            
-        if (!string.IsNullOrEmpty(Request.Query["status"]))
-            parameters["status"] = Request.Query["status"].ToString();
-            
-        if (!string.IsNullOrEmpty(Request.Query["category"]))
-            parameters["category"] = Request.Query["category"].ToString();
-            
-        if (!string.IsNullOrEmpty(Request.Query["sort"]))
-            parameters["sort"] = Request.Query["sort"].ToString();
-            
-        if (!string.IsNullOrEmpty(Request.Query["page"]))
-            parameters["page"] = Request.Query["page"].ToString();
-            
-        return parameters;
-    }
 }
