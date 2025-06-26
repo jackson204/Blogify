@@ -14,12 +14,12 @@ public class CategoryRepository
 
     public List<Category> GetCategories()
     {
-        return _context.Categories.ToList();
+        return _context.Categories.Include(c => c.Articles).ToList();
     }
 
     public Category? GetCategoryById(int id)
     {
-        return _context.Categories.FirstOrDefault(c => c.Id == id);
+        return _context.Categories.Include(c => c.Articles).FirstOrDefault(c => c.Id == id);
     }
 
     public void Add(Category category)

@@ -38,4 +38,48 @@ public class CategoriesController : Controller
         }
         return View(category);
     }
+    
+    // GET: Categories/Edit/5
+    public IActionResult Edit(int id)
+    {
+        var category = _categoryRepository.GetCategoryById(id);
+        if (category == null)
+        {
+            return NotFound();
+        }
+        return View(category);
+    }
+
+    // POST: Categories/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, Category category)
+    {
+        if (id != category.Id)
+        {
+            return NotFound();
+        }
+
+        if (ModelState.IsValid)
+        {
+            _categoryRepository.Update(category);
+            return RedirectToAction(nameof(Index));
+        }
+        return View(category);
+    }
+
+    // POST: Categories/Delete/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Delete(int id)
+    {
+        var category = _categoryRepository.GetCategoryById(id);
+        if (category == null)
+        {
+            return NotFound();
+        }
+
+        _categoryRepository.Delete(category);
+        return RedirectToAction(nameof(Index));
+    }
 }

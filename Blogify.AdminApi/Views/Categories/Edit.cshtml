@@ -1,0 +1,61 @@
+@model Blogify.AdminApi.Models.Category
+@{
+    ViewData["Title"] = "編輯分類";
+}
+
+<div id="categoryEditView">
+    <div class="page-header">
+        <h2 class="page-title">編輯分類</h2>
+        <p class="page-subtitle">修改分類資訊</p>
+    </div>
+
+    <form asp-action="Edit" method="post" class="content-card">
+        <div class="card-header">
+            <h3 class="card-title">分類資訊</h3>
+            <div class="card-actions">
+                <a href="@Url.Action("Index")" class="btn btn-secondary">
+                    <i class="icon-cancel"></i>
+                    取消
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="icon-save"></i>
+                    儲存
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Name" class="form-label">分類名稱 *</label>
+                    <input asp-for="Name" class="form-control" required placeholder="輸入分類名稱">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label">分類描述</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="輸入分類描述（可選）"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">文章數量</label>
+                    <input type="text" class="form-control" value="@Model.Articles.Count 篇文章" readonly>
+                    <small class="form-text">此分類下的文章數量</small>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -94,12 +94,15 @@
                                                         </td>
                                                         <td>
                                                             <div class="action-buttons">
-                                                                <button class="btn btn-sm btn-outline-primary" title="編輯">
+                                                                <a href="@Url.Action("Edit", new { id = category.Id })" class="btn btn-sm btn-outline-primary" title="編輯">
                                                                     <i class="icon-edit"></i>
-                                                                </button>
-                                                                <button class="btn btn-sm btn-outline-danger" title="刪除">
-                                                                    <i class="icon-delete"></i>
-                                                                </button>
+                                                                </a>
+                                                                <form asp-action="Delete" asp-route-id="@category.Id" method="post" style="display: inline;" onsubmit="return confirm('確定要刪除此分類嗎？');">
+                                                                    @Html.AntiForgeryToken()
+                                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="刪除">
+                                                                        <i class="icon-delete"></i>
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </td>
                                                     </tr>
