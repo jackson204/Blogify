@@ -41,24 +41,57 @@
                             </div>
                             <div class="card-body">
                                 <!-- 搜尋工具 -->
-                                <div class="filter-toolbar">
-                                    <div class="filter-group">
-                                        <input type="text" id="searchInput" class="form-control" placeholder="搜尋分類名稱或描述...">
+                                <form asp-controller="Categories" asp-action="Index" method="get">
+                                    <div class="filter-toolbar">
+                                        <div class="filter-group">
+                                            <input type="text" id="searchInput" name="search" value="@ViewBag.CurrentSearch" class="form-control" placeholder="搜尋分類名稱或描述...">
+                                        </div>
+                                        <div class="filter-group">
+                                            <select id="sortFilter" name="sort" class="form-control">
+                                                <option value="name" selected="@(ViewBag.CurrentSort?.ToString() == "name" || string.IsNullOrEmpty(ViewBag.CurrentSort?.ToString()))">名稱排序</option>
+                                                <option value="count" selected="@(ViewBag.CurrentSort?.ToString() == "count")">文章數量</option>
+                                                <option value="createdAt" selected="@(ViewBag.CurrentSort?.ToString() == "createdAt")">建立時間</option>
+                                            </select>
+                                        </div>
+                                        <div class="filter-group">
+                                            <button type="submit" id="searchBtn" class="btn btn-primary">
+                                                <i class="icon-search"></i>
+                                                搜尋
+                                            </button>
+                                        </div>
+                                        <div class="filter-group">
+                                            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                                                <i class="icon-refresh"></i>
+                                                清除
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="filter-group">
-                                        <select id="sortFilter" class="form-control">
-                                            <option value="name">名稱排序</option>
-                                            <option value="count">文章數量</option>
-                                            <option value="createdAt">建立時間</option>
-                                        </select>
+                                </form>
+
+                                <!-- 篩選狀態顯示 -->
+                                @if (!string.IsNullOrEmpty(ViewBag.CurrentSearch) || !string.IsNullOrEmpty(ViewBag.CurrentSort))
+                                {
+                                    <div class="filter-status">
+                                        <span class="filter-info">
+                                            @if (!string.IsNullOrEmpty(ViewBag.CurrentSearch))
+                                            {
+                                                <span class="filter-tag">搜尋: @ViewBag.CurrentSearch</span>
+                                            }
+                                            @if (!string.IsNullOrEmpty(ViewBag.CurrentSort))
+                                            {
+                                                <span class="filter-tag">排序: 
+                                                    @switch(ViewBag.CurrentSort)
+                                                    {
+                                                        case "name": <text>名稱排序</text>; break;
+                                                        case "count": <text>文章數量</text>; break;
+                                                        case "createdAt": <text>建立時間</text>; break;
+                                                        default: <text>名稱排序</text>; break;
+                                                    }
+                                                </span>
+                                            }
+                                        </span>
                                     </div>
-                                    <div class="filter-group">
-                                        <button type="button" id="searchBtn" class="btn btn-primary">
-                                            <i class="icon-search"></i>
-                                            搜尋
-                                        </button>
-                                    </div>
-                                </div>
+                                }
 
                                 <!-- 分類表格 -->
                                 <div class="table-container">

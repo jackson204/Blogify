@@ -13,11 +13,50 @@ public class CategoriesController : Controller
         _categoryRepository = categoryRepository;
     }
 
-    // GET
-    public IActionResult Index()
+    // GET: Categories
+    public IActionResult Index(string? search = null, string? sort = null)
     {
         var categories = _categoryRepository.GetCategories();
+
+        // 应用搜索过滤
+        categories = ApplySearchFilter(categories, search);
+
+        // 应用排序
+        categories = ApplySorting(categories, sort);
+
+        // 将查询条件传递给 View 以保持表单状态
+        ViewBag.CurrentSearch = search;
+        ViewBag.CurrentSort = sort;
+
         return View(categories);
+    }
+
+    /// <summary>
+    /// 根据搜索条件过滤分类
+    /// </summary>
+    private List<Category> ApplySearchFilter(List<Category> categories, string? search)
+    {
+        if (string.IsNullOrEmpty(search))
+            return categories;
+
+        return categories.Where(c =>
+            (c.Name?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false) ||
+            (c.Description?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false)
+        ).ToList();
+    }
+
+    /// <summary>
+    /// 根据排序条件对分类进行排序
+    /// </summary>
+    private List<Category> ApplySorting(List<Category> categories, string? sort)
+    {
+        return sort?.ToLower() switch
+        {
+            "count" => categories.OrderByDescending(c => c.Articles.Count).ToList(),
+            "createdat" => categories.OrderByDescending(c => c.Id).ToList(), // 假设 Id 代表创建顺序
+            "name" or null => categories.OrderBy(c => c.Name).ToList(),
+            _ => categories.OrderBy(c => c.Name).ToList()
+        };
     }
 
     // GET: Categories/Create
