@@ -9,10 +9,12 @@ namespace Blogify.AdminApi.Controllers;
 public class ArticleController : Controller
 {
     private readonly ArticleRepository _articleRepository;
+    private readonly CategoryRepository _categoryRepository;
 
-    public ArticleController(ArticleRepository articleRepository)
+    public ArticleController(ArticleRepository articleRepository, CategoryRepository categoryRepository)
     {
         _articleRepository = articleRepository;
+        _categoryRepository = categoryRepository;
     }
 
     public IActionResult List(string? search = null, string? status = null, int? category = null, string? sort = null, int page = 1)
@@ -108,7 +110,7 @@ public class ArticleController : Controller
         };
         
         // 將查詢條件傳遞給 View 以保持表單狀態
-        ViewBag.Categories = CategoryRepository.Categories();
+        ViewBag.Categories = _categoryRepository.GetCategories();
         ViewBag.CurrentSearch = filter.SearchKeyword;
         ViewBag.CurrentStatus = filter.Status;
         ViewBag.CurrentCategory = filter.CategoryId;
@@ -121,7 +123,7 @@ public class ArticleController : Controller
     public IActionResult Create(string? search = null, string? status = null, int? category = null, string? sort = null, int page = 1)
     {
         ViewBag.Action = Url.Action("Create", "Article");
-        ViewBag.Categories = CategoryRepository.Categories();
+        ViewBag.Categories = _categoryRepository.GetCategories();
         
         // 建立取消按鈕的返回 URL，包含查詢參數
         ViewBag.CancelUrl = Url.Action("List", "Article", new { 
@@ -173,7 +175,7 @@ public class ArticleController : Controller
             return NotFound();
         }
         ViewBag.Action = Url.Action("Edit", "Article", new { id = id });
-        ViewBag.Categories = CategoryRepository.Categories();
+        ViewBag.Categories = _categoryRepository.GetCategories();
         
         // 建立取消按鈕的返回 URL，包含查詢參數
         ViewBag.CancelUrl = Url.Action("List", "Article", new { 

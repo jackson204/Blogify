@@ -10,6 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BlogContext>(options => 
     options.UseInMemoryDatabase("BlogDb"));
 builder.Services.AddScoped<ArticleRepository>();
+builder.Services.AddScoped<CategoryRepository>();
 
 var app = builder.Build();
 

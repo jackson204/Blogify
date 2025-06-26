@@ -13,9 +13,10 @@ namespace Blogify.AdminApi.Data
         public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {            modelBuilder.Entity<Article>()
+        {
+            modelBuilder.Entity<Article>()
                 .HasOne(a => a.Category)
-                .WithMany()
+                .WithMany(c => c.Articles)
                 .HasForeignKey(a => a.CategoryId);
         }
     }
