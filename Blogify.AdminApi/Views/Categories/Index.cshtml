@@ -1,3 +1,4 @@
+@model List<Category>
 @{
     ViewData["Title"] = "分類管理";
 }  
@@ -32,10 +33,10 @@
                             <div class="card-header">
                                 <h3 class="card-title">分類列表</h3>
                                 <div class="card-actions">
-                                    <button id="newCategoryBtn" class="btn btn-primary">
+                                    <a href="@Url.Action("Create")" class="btn btn-primary">
                                         <i class="icon-plus"></i>
                                         新增分類
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -67,10 +68,58 @@
                                             </tr>
                                         </thead>
                                         <tbody id="categoriesTableBody">
-                                            <!-- 分類列表將由 JavaScript 動態載入 -->
-                                            <tr>
-                                        
-                                            </tr>
+                                            @if (Model != null && Model.Any())
+                                            {
+                                                @foreach (var category in Model)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <strong>@category.Name</strong>
+                                                        </td>
+                                                        <td>
+                                                            @if (!string.IsNullOrEmpty(category.Description))
+                                                            {
+                                                                <span>@category.Description</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="text-muted">無描述</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge badge-info">@category.Articles.Count</span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="text-muted">@DateTime.Now.ToString("yyyy-MM-dd")</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="action-buttons">
+                                                                <button class="btn btn-sm btn-outline-primary" title="編輯">
+                                                                    <i class="icon-edit"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-outline-danger" title="刪除">
+                                                                    <i class="icon-delete"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">
+                                                        <div class="empty-state">
+                                                            <i class="icon-folder-open"></i>
+                                                            <p>尚未建立任何分類</p>
+                                                            <a href="@Url.Action("Create")" class="btn btn-primary btn-sm">
+                                                                <i class="icon-plus"></i>
+                                                                建立第一個分類
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -86,11 +135,11 @@
                             </div>
                             <div class="card-body">
                                 <div class="quick-actions">
-                                    <button id="quickNewCategoryBtn" class="quick-action-btn">
+                                    <a href="@Url.Action("Create")" class="quick-action-btn">
                                         <i class="icon-plus"></i>
                                         <span>新增分類</span>
-                                    </button>
-                                    <a href="articles.html" class="quick-action-btn">
+                                    </a>
+                                    <a href="@Url.Action("Index", "Article")" class="quick-action-btn">
                                         <i class="icon-article"></i>
                                         <span>文章管理</span>
                                     </a>
@@ -113,101 +162,41 @@
                             </div>
                             <div class="card-body">
                                 <div id="categoryStatsDetail">
-                                    <!-- 詳細統計將由 JavaScript 動態載入 -->
-                                    <div class="text-center p-4">
-                                        <div class="spinner"></div>
-                                        <p class="mt-3">載入中...</p>
-                                    </div>
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        <div class="stats-list">
+                                            <div class="stat-item">
+                                                <span class="stat-label">總分類數</span>
+                                                <span class="stat-value">@Model.Count</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-label">總文章數</span>
+                                                <span class="stat-value">@Model.Sum(c => c.Articles.Count)</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-label">平均文章數</span>
+                                                <span class="stat-value">@(Model.Count > 0 ? Math.Round((double)Model.Sum(c => c.Articles.Count) / Model.Count, 1) : 0)</span>
+                                            </div>
+                                            @if (Model.Any())
+                                            {
+                                                var mostUsedCategory = Model.OrderByDescending(c => c.Articles.Count).First();
+                                                <div class="stat-item">
+                                                    <span class="stat-label">最多文章分類</span>
+                                                    <span class="stat-value">@mostUsedCategory.Name (@mostUsedCategory.Articles.Count)</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center p-4">
+                                            <i class="icon-chart"></i>
+                                            <p class="mt-3">尚無統計資料</p>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- 分類編輯視圖 -->
-            <div id="categoryEditView" class="d-none">
-                <!-- 頁面標題 -->
-                <div class="page-header">
-                    <h2 class="page-title" id="editPageTitle">新增分類</h2>
-                    <p class="page-subtitle">設定分類資訊</p>
-                </div>
-
-                <!-- 編輯表單 -->
-                <form id="categoryForm" class="content-card">
-                    <div class="card-header">
-                        <h3 class="card-title">分類資訊</h3>
-                        <div class="card-actions">
-                            <button type="button" id="cancelEditBtn" class="btn btn-secondary">
-                                <i class="icon-cancel"></i>
-                                取消
-                            </button>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="icon-save"></i>
-                                儲存
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <input type="hidden" id="categoryId">
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="categoryName" class="form-label">分類名稱 *</label>
-                                <input type="text" id="categoryName" name="name" class="form-control" required placeholder="輸入分類名稱">
-                            </div>
-                            <div class="form-group">
-                                <label for="categorySlug" class="form-label">分類代碼</label>
-                                <input type="text" id="categorySlug" name="slug" class="form-control" placeholder="自動生成或手動輸入">
-                                <small class="form-text">用於URL，留空將自動生成</small>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="categoryDescription" class="form-label">分類描述</label>
-                                <textarea id="categoryDescription" name="description" class="form-control" rows="3" placeholder="描述這個分類的用途..."></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="categoryColor" class="form-label">分類顏色</label>
-                                <div class="color-picker-container">
-                                    <input type="color" id="categoryColor" name="color" class="color-picker" value="#007bff">
-                                    <div class="color-presets">
-                                        <button type="button" class="color-preset" data-color="#007bff" style="background: #007bff;"></button>
-                                        <button type="button" class="color-preset" data-color="#28a745" style="background: #28a745;"></button>
-                                        <button type="button" class="color-preset" data-color="#dc3545" style="background: #dc3545;"></button>
-                                        <button type="button" class="color-preset" data-color="#ffc107" style="background: #ffc107;"></button>
-                                        <button type="button" class="color-preset" data-color="#17a2b8" style="background: #17a2b8;"></button>
-                                        <button type="button" class="color-preset" data-color="#6f42c1" style="background: #6f42c1;"></button>
-                                        <button type="button" class="color-preset" data-color="#fd7e14" style="background: #fd7e14;"></button>
-                                        <button type="button" class="color-preset" data-color="#20c997" style="background: #20c997;"></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="categoryIcon" class="form-label">分類圖示</label>
-                                <input type="text" id="categoryIcon" name="icon" class="form-control" placeholder="📁" maxlength="2">
-                                <small class="form-text">輸入一個表情符號作為圖示</small>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="categoryOrder" class="form-label">排序順序</label>
-                                <input type="number" id="categoryOrder" name="order" class="form-control" min="0" value="0">
-                                <small class="form-text">數字越小排序越前面</small>
-                            </div>
-                            <div class="form-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="categoryVisible" name="visible" checked>
-                                    <span class="checkmark"></span>
-                                    在前台顯示此分類
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
