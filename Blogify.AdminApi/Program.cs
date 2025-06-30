@@ -111,6 +111,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-// 為測試專案提供存取權限
-public partial class Program { }
