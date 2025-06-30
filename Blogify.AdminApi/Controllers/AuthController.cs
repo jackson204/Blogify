@@ -27,8 +27,8 @@ public class AuthController : Controller
 
         if (model.Username == DemoUsername && model.Password == DemoPassword)
         {
-            // 登入成功，直接重導向到文章列表
-            return RedirectToAction("List", "Article");
+            // 登入成功，重導向到管理後台首頁
+            return RedirectToAction("Index", "Home");
         }
 
         // 登入失敗
