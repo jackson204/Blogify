@@ -1,99 +1,261 @@
+@model Blogify.AdminApi.DTO.LoginDto
 @{
-    ViewData["Title"] = "管理員登入 - MyBlog";
+    ViewData["Title"] = "管理員登入";
     Layout = null;
 }
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
+    <title>管理員登入 - MyBlog</title>
     <meta name="description" content="MyBlog 管理後台登入">
+    
     <!-- 樣式表 -->
     <link rel="stylesheet" href="~/shared/css/common.css">
     <link rel="stylesheet" href="~/admin/css/admin.css">
+    
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+    
+    <style>
+        /* 基本樣式 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .login-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 5px 0;
+        }
+        
+        .login-subtitle {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .login-demo {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .login-demo h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .login-demo p {
+            margin: 0 0 15px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .login-footer {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .validation-summary-errors {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .field-validation-error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body class="login-page">
     <div class="login-container">
-        <div class="login-card">
-            <!-- Logo 區域 -->
-            <div class="login-header">
-                <div class="login-logo">
-                    🔐 MyBlog
-                </div>
-                <h1 class="login-title">管理後台</h1>
-                <p class="login-subtitle">請輸入您的帳號密碼登入</p>
+        <!-- Logo 區域 -->
+        <div class="login-header">
+            <div class="login-logo">
+                🔐 MyBlog
             </div>
-            <!-- 登入表單 -->
-            <form id="loginForm" class="login-form" method="post" asp-action="Login">
-                <div class="form-group">
-                    <label for="username" class="form-label">
-                        <i class="icon-user"></i> 帳號
-                    </label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        class="form-control" 
-                        placeholder="請輸入帳號"
-                        required
-                        autocomplete="username"
-                        value="@(ViewData["Username"] ?? "")"
-                    >
-                </div>
-                <div class="form-group">
-                    <label for="password" class="form-label">
-                        🔒 密碼
-                    </label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        class="form-control" 
-                        placeholder="請輸入密碼"
-                        required
-                        autocomplete="current-password"
-                    >
-                </div>
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="rememberMe" name="rememberMe">
-                        <span class="checkmark"></span>
-                        記住我
-                    </label>
-                </div>
-                <button type="submit" id="loginBtn" class="btn btn-primary btn-lg login-btn">
-                    <span class="btn-text">登入</span>
-                </button>
-                @if(ViewData["Error"] != null) {
-                    <div class="alert alert-danger mt-2">@ViewData["Error"]</div>
-                }
-            </form>
-            <!-- 測試帳號提示 -->
-            <div class="login-demo">
-                <h4>測試帳號</h4>
-                <p>
-                    <strong>帳號：</strong> admin<br>
-                    <strong>密碼：</strong> 123456
-                </p>
-            </div>
-            <!-- 返回首頁 -->
-            <div class="login-footer">
-                <a href="~/client/index.html" class="back-link">
-                    ← 返回網站首頁
-                </a>
-            </div>
+            <h1 class="login-title">管理後台</h1>
+            <p class="login-subtitle">請輸入您的帳號密碼登入</p>
         </div>
-        <!-- 背景裝飾 -->
-        <div class="login-bg">
-            <div class="bg-shape bg-shape-1"></div>
-            <div class="bg-shape bg-shape-2"></div>
-            <div class="bg-shape bg-shape-3"></div>
+
+        <!-- 錯誤訊息 -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="All" class="validation-summary-errors"></div>
+        }
+
+        <!-- 登入表單 -->
+        <form asp-action="Login" asp-controller="Auth" method="post" class="login-form">
+            @Html.AntiForgeryToken()
+            
+            <div class="form-group">
+                <label asp-for="Username" class="form-label">
+                    👤 帳號
+                </label>
+                <input asp-for="Username" 
+                       class="form-control" 
+                       placeholder="請輸入帳號"
+                       autocomplete="username">
+                <span asp-validation-for="Username" class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="form-label">
+                    🔒 密碼
+                </label>
+                <input asp-for="Password" 
+                       type="password"
+                       class="form-control" 
+                       placeholder="請輸入密碼"
+                       autocomplete="current-password">
+                <span asp-validation-for="Password" class="field-validation-error"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                登入
+            </button>
+        </form>
+
+        <!-- 測試帳號提示 -->
+        <div class="login-demo">
+            <h4>測試帳號</h4>
+            <p>
+                <strong>帳號：</strong> admin<br>
+                <strong>密碼：</strong> password
+            </p>
+            <button type="button" id="fillDemoBtn" class="btn btn-secondary">
+                填入測試帳號
+            </button>
+        </div>
+
+        <!-- 返回首頁 -->
+        <div class="login-footer">
+            <a href="@Url.Action("Index", "Home")" class="back-link">
+                ← 返回網站首頁
+            </a>
         </div>
     </div>
-    <!-- JavaScript -->
-    <script src="~/shared/js/utils.js"></script>
+
+    <script>
+        // 填入測試帳號
+        document.getElementById('fillDemoBtn').addEventListener('click', function() {
+            document.getElementById('Username').value = 'admin';
+            document.getElementById('Password').value = 'password';
+        });
+    </script>
 </body>
-</html>
+</html> 
