@@ -35,4 +35,13 @@ public class AuthController : Controller
         ModelState.AddModelError("", "帳號或密碼錯誤");
         return View(model);
     }
+
+    // POST: Auth/Logout
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Logout()
+    {
+        // 清除登入狀態 (目前簡化版本，只需重導向到登入頁)
+        return RedirectToAction("Login");
+    }
 }

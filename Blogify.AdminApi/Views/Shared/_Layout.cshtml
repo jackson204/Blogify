@@ -16,26 +16,26 @@
         <!-- 側邊欄 -->
         <aside class="admin-sidebar">
             <div class="sidebar-header">
-                <a href="@Url.Content("~/admin/index.html")" class="sidebar-logo">
+                <a href="@Url.Action("Index", "Home")" class="sidebar-logo">
                     📊 MyBlog Admin
                 </a>
             </div>
             <nav>
                 <ul class="sidebar-menu">
                     <li>
-                        <a href="@Url.Content("~/admin/index.html")" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Home")" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
                             <i class="icon-dashboard"></i>
                             <span>儀表板</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/admin/Article/List" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Article" ? "active" : "")">
+                        <a href="@Url.Action("List", "Article")" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Article" ? "active" : "")">
                             <i class="icon-article"></i>
                             <span>文章管理</span>
                         </a>
                     </li>
                     <li>
-                        <a href="@Url.Content("~/admin/categories.html")">
+                        <a href="@Url.Action("Index", "Categories")">
                             <i class="icon-category"></i>
                             <span>分類管理</span>
                         </a>
@@ -57,10 +57,13 @@
                     <div class="user-avatar">A</div>
                     <span class="user-name">管理員</span>
                 </div>
-                <button class="logout-btn" data-action="logout">
-                    <i class="icon-logout"></i>
-                    登出
-                </button>
+                <form asp-action="Logout" asp-controller="Auth" method="post" style="display: inline;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="logout-btn">
+                        <i class="icon-logout"></i>
+                        登出
+                    </button>
+                </form>
             </div>
         </header>
         <!-- 主要內容 -->
@@ -68,11 +71,6 @@
             @RenderBody()
         </main>
     </div>
-    <!-- JavaScript -->
-    <script src="@Url.Content("~/shared/js/utils.js")"></script>
-    <script src="@Url.Content("~/admin/js/api.js")"></script>
-    <script src="@Url.Content("~/admin/js/auth.js")"></script>
-    <script src="@Url.Content("~/admin/js/admin.js")"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
