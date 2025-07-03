@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Blogify.AdminApi.Models;
 using Blogify.AdminApi.Models.Repository;
 
 namespace Blogify.AdminApi.Controllers;
 
+[Authorize]
 public class CategoriesController : Controller
 {
     private readonly CategoryRepository _categoryRepository;

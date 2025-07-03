@@ -1,6 +1,7 @@
 using Blogify.AdminApi.Data;
 using Blogify.AdminApi.Models;
 using Blogify.AdminApi.Models.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,26 @@ builder.Services.AddDbContext<BlogContext>(options =>
     options.UseInMemoryDatabase("BlogDb"));
 builder.Services.AddScoped<ArticleRepository>();
 builder.Services.AddScoped<CategoryRepository>();
+
+// 添加 Cookie 驗證
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+   // 設定登入頁面路徑
+        options.LoginPath = "/Auth/Login";
+        // 設定登出頁面路徑
+        options.LogoutPath = "/Auth/Logout";
+        // 設定 Cookie 有效期限為 7 天
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        // 啟用滑動過期，使用者活動時自動延長 Cookie 有效期
+        options.SlidingExpiration = true;
+        //瀏覽器 中 設定 Cookie 名稱 
+        options.Cookie.Name = "BlogifyAuth99999";
+        // 僅允許伺服器端存取 Cookie，提升安全性
+        options.Cookie.HttpOnly = true;
+        // 根據請求協定決定是否僅在 HTTPS 下傳送 Cookie
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    });
 
 var app = builder.Build();
 
@@ -100,6 +121,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

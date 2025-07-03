@@ -3,9 +3,11 @@ using Blogify.AdminApi.Models;
 using Blogify.AdminApi.Models.Repository;
 using Blogify.AdminApi.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Blogify.AdminApi.Controllers;
 
+[Authorize]
 public class ArticleController : Controller
 {
     private readonly ArticleRepository _articleRepository;
