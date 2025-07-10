@@ -1,14 +1,19 @@
-﻿@{
+﻿@model Blogify.ClientApi.ViewModel.HomeViewModel
+@{
     ViewBag.Title = "首頁";
-    ViewBag.Description = "歡迎來到 MyBlog - 專業的技術部落格平台";
+    ViewBag.Description = Model.SiteDescription;
     ViewBag.Keywords = "部落格,首頁,技術,程式設計";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/client/css/home.css">
 }
 
 <div class="hero-section">
     <div class="container">
         <div class="text-center">
-            <h1 class="display-4">歡迎來到 MyBlog</h1>
-            <p class="lead">專業的技術部落格平台，分享最新的程式設計知識和開發經驗</p>
+            <h1 class="display-4">@Model.WelcomeMessage</h1>
+            <p class="lead">@Model.SiteDescription</p>
             <a asp-controller="Home" asp-action="About" class="btn btn-primary">了解更多</a>
         </div>
     </div>
@@ -17,24 +22,118 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-8">
-            <h2>最新文章</h2>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>最新文章</h2>
+                <small class="text-muted">共 @Model.TotalArticles 篇文章</small>
+            </div>
+            
             <div class="article-list">
-                <!-- 文章列表將在此處動態載入 -->
-                <div class="article-card">
-                    <h3><a href="#">範例文章標題</a></h3>
-                    <p class="meta">發佈於 2024-01-01 | 分類：技術</p>
-                    <p>這是一個範例文章的摘要內容...</p>
-                </div>
+                @if (Model.LatestArticles != null && Model.LatestArticles.Any())
+                {
+                    @foreach (var article in Model.LatestArticles)
+                    {
+                        <div class="article-card mb-4 p-4 border rounded">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h3 class="h5 mb-0">
+                                    <a href="/article/@article.Slug" class="text-decoration-none">@article.Title</a>
+                                </h3>
+                                @if (article.IsFeatured)
+                                {
+                                    <span class="badge bg-warning text-dark">精選</span>
+                                }
+                            </div>
+                            <p class="meta text-muted small mb-2">
+                                <i class="fas fa-calendar-alt me-1"></i>發佈於 @article.PublishedDate.ToString("yyyy-MM-dd") | 
+                                <i class="fas fa-folder me-1"></i>分類：@article.CategoryName | 
+                                <i class="fas fa-user me-1"></i>作者：@article.AuthorName |
+                                <i class="fas fa-eye me-1"></i>閱讀：@article.ViewCount 次
+                            </p>
+                            <p class="article-preview">@article.Preview</p>
+                            @if (article.Tags != null && article.Tags.Any())
+                            {
+                                <div class="article-tags mt-2">
+                                    @foreach (var tag in article.Tags)
+                                    {
+                                        <span class="badge bg-secondary me-1">@tag</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <p class="text-muted">目前沒有文章</p>
+                    </div>
+                }
             </div>
         </div>
+        
         <div class="col-md-4">
             <div class="sidebar">
-                <h3>文章分類</h3>
-                <ul class="category-list">
-                    <li><a href="#">技術教學</a></li>
-                    <li><a href="#">開發經驗</a></li>
-                    <li><a href="#">工具介紹</a></li>
-                </ul>
+                <!-- 文章分類 -->
+                <div class="sidebar-section mb-4">
+                    <h3 class="h5 mb-3">文章分類</h3>
+                    @if (Model.Categories != null && Model.Categories.Any())
+                    {
+                        <ul class="category-list list-unstyled">
+                            @foreach (var category in Model.Categories)
+                            {
+                                <li class="mb-2">
+                                    <a href="/category/@category.Slug" class="text-decoration-none d-flex justify-content-between align-items-center">
+                                        <span>@category.Name</span>
+                                        <span class="badge bg-light text-dark">@category.ArticleCount</span>
+                                    </a>
+                                    @if (!string.IsNullOrEmpty(category.Description))
+                                    {
+                                        <small class="text-muted">@category.Description</small>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+
+                <!-- 熱門文章 -->
+                @if (Model.PopularArticles != null && Model.PopularArticles.Any())
+                {
+                    <div class="sidebar-section mb-4">
+                        <h3 class="h5 mb-3">熱門文章</h3>
+                        <div class="popular-articles">
+                            @foreach (var article in Model.PopularArticles)
+                            {
+                                <div class="popular-article-item mb-3 pb-3 border-bottom">
+                                    <h6 class="mb-1">
+                                        <a href="/article/@article.Slug" class="text-decoration-none">@article.Title</a>
+                                    </h6>
+                                    <small class="text-muted">
+                                        <i class="fas fa-eye me-1"></i>@article.ViewCount 次閱讀
+                                    </small>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- 網站統計 -->
+                <div class="sidebar-section">
+                    <h3 class="h5 mb-3">網站統計</h3>
+                    <div class="stats">
+                        <div class="stat-item d-flex justify-content-between mb-2">
+                            <span>總文章數</span>
+                            <span class="fw-bold">@Model.TotalArticles</span>
+                        </div>
+                        <div class="stat-item d-flex justify-content-between mb-2">
+                            <span>文章分類</span>
+                            <span class="fw-bold">@Model.TotalCategories</span>
+                        </div>
+                        <div class="stat-item d-flex justify-content-between">
+                            <span>最新文章</span>
+                            <span class="fw-bold">@Model.LatestArticlesCount</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
