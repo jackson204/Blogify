@@ -1,50 +1,114 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@{
+    ViewBag.Title = ViewBag.Title ?? "首頁";
+    ViewBag.Description = ViewBag.Description ?? "專業的技術部落格平台，分享最新的程式設計知識和開發經驗。";
+    ViewBag.Keywords = ViewBag.Keywords ?? "部落格,技術,程式設計,開發,MyBlog";
+}
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-	<meta charset="utf-8" />
-	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<title>@ViewData["Title"] - Blogify.ClientApi</title>
-	<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-	<link asp-append-version="true" href="~/css/site.css" rel="stylesheet" />
-	<link asp-append-version="true" href="~/Blogify.ClientApi.styles.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - MyBlog</title>
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="keywords" content="@ViewBag.Keywords">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="@ViewBag.Title - MyBlog">
+    <meta property="og:description" content="@ViewBag.Description">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="@Context.Request.GetDisplayUrl()">
+    
+    <!-- 樣式表 -->
+    <link rel="stylesheet" href="~/shared/css/common.css">
+    <link rel="stylesheet" href="~/client/css/style.css">
+    <link rel="stylesheet" href="~/client/css/article.css">
+    
+    <!-- Bootstrap CSS (可選) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+    
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-<header>
-	<nav class="bg-white border-bottom box-shadow mb-3 navbar navbar-expand-sm navbar-light navbar-toggleable-sm">
-		<div class="container-fluid">
-			<a asp-action="Index" asp-area="" asp-controller="Home" class="navbar-brand">Blogify.ClientApi</a>
-			<button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target=".navbar-collapse"
-				data-bs-toggle="collapse" type="button">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse d-sm-inline-flex justify-content-between navbar-collapse">
-				<ul class="flex-grow-1 navbar-nav">
-					<li class="nav-item">
-						<a asp-action="Index" asp-area="" asp-controller="Home" class="nav-link text-dark">Home</a>
-					</li>
-					<li class="nav-item">
-						<a asp-action="Privacy" asp-area="" asp-controller="Home" class="nav-link text-dark">Privacy</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-</header>
-<div class="container">
-	<main class="pb-3" role="main">
-		@RenderBody()
-	</main>
-</div>
+    <!-- 頁首 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a asp-controller="Home" asp-action="Index" class="logo">
+                    📝 MyBlog
+                </a>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a asp-controller="Home" asp-action="Index"><i class="icon-home"></i> 首頁</a></li>
+                        <li><a asp-controller="Home" asp-action="Categories">分類</a></li>
+                        <li><a asp-controller="Home" asp-action="About">關於</a></li>
+                        <li><a href="/admin/login.html">管理</a></li>
+                    </ul>
+                </nav>
+                <!-- 手機版選單按鈕 -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-<footer class="border-top footer text-muted">
-	<div class="container">
-		&copy; 2025 - Blogify.ClientApi -
-		<a asp-action="Privacy" asp-area="" asp-controller="Home">Privacy</a>
-	</div>
-</footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script asp-append-version="true" src="~/js/site.js"></script>
-@await RenderSectionAsync("Scripts", required: false)
+    <!-- 主要內容 -->
+    <main class="main-content">
+        @RenderBody()
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>MyBlog</h4>
+                    <p>專業的技術部落格平台，分享最新的程式設計知識和開發經驗。</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速連結</h4>
+                    <p><a asp-controller="Home" asp-action="Index">首頁</a></p>
+                    <p><a asp-controller="Home" asp-action="Categories">文章分類</a></p>
+                    <p><a asp-controller="Home" asp-action="About">關於我們</a></p>
+                    <p><a href="/admin/login.html">管理後台</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>技術支援</h4>
+                    <p>本站使用純 HTML、CSS 和 JavaScript 建構</p>
+                    <p>響應式設計，支援各種裝置</p>
+                </div>
+                <div class="footer-section">
+                    <h4>聯絡資訊</h4>
+                    <p>Email: contact@myblog.com</p>
+                    <p>如有任何問題或建議，歡迎與我們聯絡</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; @DateTime.Now.Year MyBlog. 版權所有。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <!-- Bootstrap JS (可選) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 自訂 JavaScript -->
+    <script src="~/shared/js/utils.js"></script>
+    <script src="~/client/js/api.js"></script>
+    <script src="~/client/js/article.js"></script>
+    
+    <!-- 加入 ASP.NET Core 的反偽造令牌 -->
+    <script>
+        window.antiforgeryToken = '@Html.AntiForgeryToken()';
+    </script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

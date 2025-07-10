@@ -1,11 +1,41 @@
 ﻿@{
-	ViewData["Title"] = "Home Page";
+    ViewBag.Title = "首頁";
+    ViewBag.Description = "歡迎來到 MyBlog - 專業的技術部落格平台";
+    ViewBag.Keywords = "部落格,首頁,技術,程式設計";
 }
 
-<div class="text-center">
-	<h1 class="display-4">Welcome</h1>
-	<p>
-		Learn about
-		<a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.
-	</p>
+<div class="hero-section">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="display-4">歡迎來到 MyBlog</h1>
+            <p class="lead">專業的技術部落格平台，分享最新的程式設計知識和開發經驗</p>
+            <a asp-controller="Home" asp-action="About" class="btn btn-primary">了解更多</a>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>最新文章</h2>
+            <div class="article-list">
+                <!-- 文章列表將在此處動態載入 -->
+                <div class="article-card">
+                    <h3><a href="#">範例文章標題</a></h3>
+                    <p class="meta">發佈於 2024-01-01 | 分類：技術</p>
+                    <p>這是一個範例文章的摘要內容...</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="sidebar">
+                <h3>文章分類</h3>
+                <ul class="category-list">
+                    <li><a href="#">技術教學</a></li>
+                    <li><a href="#">開發經驗</a></li>
+                    <li><a href="#">工具介紹</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
