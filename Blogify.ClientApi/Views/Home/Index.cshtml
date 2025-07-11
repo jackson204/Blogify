@@ -73,6 +73,26 @@
         <div class="col-md-4">
             <div class="sidebar">
                 <!-- 文章分類 -->
+                <!-- 熱門文章 -->
+                @if (Model.PopularArticles != null && Model.PopularArticles.Any())
+                {
+                    <div class="sidebar-section mb-4">
+                        <h3 class="h5 mb-3">熱門文章</h3>
+                        <div class="popular-articles">
+                            @foreach (var article in Model.PopularArticles)
+                            {
+                                <div class="popular-article-item mb-3 pb-3 border-bottom">
+                                    <h6 class="mb-1">
+                                        <a href="/article/@article.Slug" class="text-decoration-none">@article.Title</a>
+                                    </h6>
+                                    <small class="text-muted">
+                                        <i class="fas fa-eye me-1"></i>@article.ViewCount 次閱讀
+                                    </small>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
                 <div class="sidebar-section mb-4">
                     <h3 class="h5 mb-3">文章分類</h3>
                     @if (Model.Categories != null && Model.Categories.Any())
@@ -95,26 +115,7 @@
                     }
                 </div>
 
-                <!-- 熱門文章 -->
-                @if (Model.PopularArticles != null && Model.PopularArticles.Any())
-                {
-                    <div class="sidebar-section mb-4">
-                        <h3 class="h5 mb-3">熱門文章</h3>
-                        <div class="popular-articles">
-                            @foreach (var article in Model.PopularArticles)
-                            {
-                                <div class="popular-article-item mb-3 pb-3 border-bottom">
-                                    <h6 class="mb-1">
-                                        <a href="/article/@article.Slug" class="text-decoration-none">@article.Title</a>
-                                    </h6>
-                                    <small class="text-muted">
-                                        <i class="fas fa-eye me-1"></i>@article.ViewCount 次閱讀
-                                    </small>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                }
+           
 
                 <!-- 網站統計 -->
                 <div class="sidebar-section">
