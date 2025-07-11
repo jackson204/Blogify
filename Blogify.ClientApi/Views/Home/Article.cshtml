@@ -11,7 +11,7 @@
 
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="article-detail">
                 <!-- 文章標題 -->
                 <h1 class="article-title mb-3">@Model.Title</h1>
@@ -97,50 +97,6 @@ public class Example
                             <button class="btn btn-outline-success" onclick="shareArticle()">
                                 <i class="fas fa-share-alt me-2"></i>分享文章
                             </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 側邊欄 -->
-        <div class="col-md-4">
-            <div class="sidebar">
-                <!-- 相關文章 -->
-                <div class="sidebar-section mb-4">
-                    <h5 class="sidebar-title mb-3">相關文章</h5>
-                    <div class="related-articles">
-                        <!-- 這裡可以顯示相關文章 -->
-                        <div class="related-article-item mb-3 pb-3 border-bottom">
-                            <h6 class="mb-1">
-                                <a href="#" class="text-decoration-none">相關文章標題 1</a>
-                            </h6>
-                            <small class="text-muted">2024-01-01</small>
-                        </div>
-                        <div class="related-article-item mb-3 pb-3 border-bottom">
-                            <h6 class="mb-1">
-                                <a href="#" class="text-decoration-none">相關文章標題 2</a>
-                            </h6>
-                            <small class="text-muted">2024-01-02</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 文章資訊 -->
-                <div class="sidebar-section">
-                    <h5 class="sidebar-title mb-3">文章資訊</h5>
-                    <div class="article-info">
-                        <div class="info-item d-flex justify-content-between mb-2">
-                            <span>字數統計</span>
-                            <span class="fw-bold">約 @(Model.Preview.Length * 3) 字</span>
-                        </div>
-                        <div class="info-item d-flex justify-content-between mb-2">
-                            <span>預估閱讀時間</span>
-                            <span class="fw-bold">約 @Math.Max(1, Model.Preview.Length / 100) 分鐘</span>
-                        </div>
-                        <div class="info-item d-flex justify-content-between">
-                            <span>文章分類</span>
-                            <span class="fw-bold">@Model.CategoryName</span>
                         </div>
                     </div>
                 </div>
