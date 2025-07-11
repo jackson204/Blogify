@@ -1,0 +1,255 @@
+@model Blogify.ClientApi.ViewModel.AboutViewModel
+@{
+    ViewBag.Title = "關於我們";
+    ViewBag.Description = Model.SiteDescription;
+    ViewBag.Keywords = "關於,MyBlog,技術部落格,程式設計,開發團隊";
+}
+
+@section Styles {
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .about-content {
+            line-height: 1.8;
+        }
+        
+        .about-content h3 {
+            color: #2c3e50;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .about-content h4 {
+            color: #34495e;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .team-member {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-8px);
+        }
+        
+        .member-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            object-fit: cover;
+            border: 4px solid #f8f9fa;
+        }
+        
+        .member-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .member-role {
+            color: #667eea;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .member-description {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .contact-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+        
+        .contact-info {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        @@media (max-width: 768px) {
+            .about-hero {
+                padding: 2rem 0;
+            }
+            
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .team-member {
+                padding: 1.5rem;
+            }
+            
+            .member-avatar {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .contact-section {
+                padding: 1.5rem;
+            }
+            
+            .contact-info {
+                padding: 1rem;
+            }
+        }
+    </style>
+}
+
+<!-- 頁首橫幅 -->
+<div class="about-hero">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="display-4 mb-3">關於 MyBlog</h1>
+            <p class="lead">@Model.SiteDescription</p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- 網站統計 -->
+            <div class="stats-grid">
+                @foreach (var stat in Model.Statistics)
+                {
+                    <div class="stat-card">
+                        <div class="stat-number">@stat.Value.ToString("N0")</div>
+                        <div class="stat-label">@stat.Key</div>
+                    </div>
+                }
+            </div>
+
+            <!-- 關於內容 -->
+            <div class="about-content">
+                @Html.Raw(Model.AboutContent)
+            </div>
+        </div>
+    </div>
+
+    <!-- 團隊成員 -->
+    @if (Model.TeamMembers != null && Model.TeamMembers.Any())
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4">我們的團隊</h2>
+                <div class="team-grid">
+                    @foreach (var member in Model.TeamMembers)
+                    {
+                        <div class="team-member">
+                            <img src="@member.Avatar" alt="@member.Name" class="member-avatar">
+                            <div class="member-name">@member.Name</div>
+                            <div class="member-role">@member.Role</div>
+                            <div class="member-description">@member.Description</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- 聯絡資訊 -->
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="contact-section">
+                <h3 class="text-center mb-4">聯絡我們</h3>
+                <div class="contact-info">
+                    <p class="mb-3">
+                        <strong>📧 電子郵件:</strong> 
+                        <a href="mailto:@Model.ContactEmail" class="text-decoration-none">@Model.ContactEmail</a>
+                    </p>
+                    <p class="mb-3">
+                        <strong>📅 成立時間:</strong> 
+                        @Model.EstablishedDate.ToString("yyyy年MM月")
+                    </p>
+                    <p class="mb-0">
+                        <strong>💡 回饋建議:</strong> 
+                        我們非常歡迎您的寶貴意見和建議，幫助我們不斷改進和完善平台。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 返回頂部按鈕 -->
+<div class="text-center mt-5">
+    <a href="#" class="btn btn-outline-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i class="fas fa-arrow-up"></i> 返回頂部
+    </a>
+</div>
