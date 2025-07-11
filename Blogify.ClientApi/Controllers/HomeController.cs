@@ -58,8 +58,8 @@ public class HomeController : Controller
             new CategoryViewModel { Id = 6, Name = "工具介紹", Description = "開發工具與實用軟體介紹", ArticleCount = 1, Slug = "tools" }
         };
 
-        // 使用排序後的文章資料
-        homeViewModel.LatestArticles = sortedArticles;
+        // 使用分頁後的文章資料
+        homeViewModel.LatestArticles = pagedArticles;
 
         // 熱門文章 (按閱讀次數排序)
         homeViewModel.PopularArticles = homeViewModel.LatestArticles
