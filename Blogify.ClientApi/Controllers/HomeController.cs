@@ -201,7 +201,7 @@ public class HomeController : Controller
                 Title = "ASP.NET Core 8 新功能完整指南",
                 Summary = "深入探討 ASP.NET Core 8 的最新功能和改進",
                 Preview = "ASP.NET Core 8 帶來了許多令人興奮的新功能，包括更好的效能、新的 API 端點和改進的開發者體驗。本文將帶您深入了解這些新特性...",
-                PublishedDate = DateTime.Now.AddDays(-2),
+                PublishedDate = new DateTime(2025, 7, 1),
                 CategoryName = "C# 開發",
                 AuthorName = "技術團隊",
                 ViewCount = 1205,
@@ -215,7 +215,7 @@ public class HomeController : Controller
                 Title = "JavaScript ES2024 新特性解析",
                 Summary = "了解 JavaScript 最新版本的新語法和功能",
                 Preview = "JavaScript ES2024 版本引入了許多實用的新特性，包括新的陣列方法、改進的錯誤處理和更好的異步程式設計支援。讓我們一起探索這些新功能...",
-                PublishedDate = DateTime.Now.AddDays(-5),
+                PublishedDate = new DateTime(2024, 12, 15),
                 CategoryName = "前端技術",
                 AuthorName = "前端專家",
                 ViewCount = 892,
@@ -229,7 +229,7 @@ public class HomeController : Controller
                 Title = "Entity Framework Core 效能最佳化技巧",
                 Summary = "提升 EF Core 查詢效能的實用技巧和最佳實踐",
                 Preview = "Entity Framework Core 是 .NET 生態系統中最受歡迎的 ORM 工具之一。本文將分享如何最佳化 EF Core 的查詢效能...",
-                PublishedDate = DateTime.Now.AddDays(-7),
+                PublishedDate = new DateTime(2023, 11, 20),
                 CategoryName = "資料庫",
                 AuthorName = "資料庫專家",
                 ViewCount = 756,
@@ -243,7 +243,7 @@ public class HomeController : Controller
                 Title = "Docker 容器化應用程式部署實戰",
                 Summary = "從零開始學習 Docker 容器化技術",
                 Preview = "Docker 已成為現代應用程式部署的標準工具。本文將透過實際範例，帶您了解如何使用 Docker 容器化您的應用程式...",
-                PublishedDate = DateTime.Now.AddDays(-10),
+                PublishedDate = new DateTime(2025, 6, 10),
                 CategoryName = "DevOps",
                 AuthorName = "DevOps 工程師",
                 ViewCount = 634,
@@ -257,7 +257,7 @@ public class HomeController : Controller
                 Title = "Azure Functions 無伺服器架構入門",
                 Summary = "學習使用 Azure Functions 建立無伺服器應用程式",
                 Preview = "無伺服器架構是雲端運算的重要趨勢。Azure Functions 提供了一個強大的平台來建立事件驅動的應用程式...",
-                PublishedDate = DateTime.Now.AddDays(-12),
+                PublishedDate = new DateTime(2024, 8, 5),
                 CategoryName = "雲端服務",
                 AuthorName = "雲端架構師",
                 ViewCount = 521,
@@ -271,13 +271,111 @@ public class HomeController : Controller
                 Title = "Visual Studio Code 擴充功能推薦",
                 Summary = "提升開發效率的 VS Code 擴充功能清單",
                 Preview = "Visual Studio Code 是目前最受歡迎的程式編輯器之一。透過安裝適當的擴充功能，可以大幅提升開發效率...",
-                PublishedDate = DateTime.Now.AddDays(-15),
+                PublishedDate = new DateTime(2023, 5, 18),
                 CategoryName = "工具介紹",
                 AuthorName = "開發者",
                 ViewCount = 445,
                 Slug = "vscode-extensions-recommendations",
                 Tags = new List<string> { "VS Code", "擴充功能", "開發工具", "效率" },
                 IsFeatured = false
+            },
+            new HomeArticleViewModel
+            {
+                Id = 7,
+                Title = "Blazor WebAssembly 實戰教學",
+                Summary = "從入門到進階，打造互動式 Web 應用",
+                Preview = "Blazor WebAssembly 讓 C# 開發者能夠直接在瀏覽器中撰寫前端程式。本文將帶你一步步打造 Blazor 應用...",
+                PublishedDate = new DateTime(2025, 2, 28),
+                CategoryName = "C# 開發",
+                AuthorName = "全端工程師",
+                ViewCount = 980,
+                Slug = "blazor-webassembly-tutorial",
+                Tags = new List<string> { "Blazor", "WebAssembly", "C#", "前端" },
+                IsFeatured = true
+            },
+            new HomeArticleViewModel
+            {
+                Id = 8,
+                Title = "React 18 新功能與最佳實踐",
+                Summary = "掌握 React 18 的新特性與效能優化技巧",
+                Preview = "React 18 帶來了自動批次更新、Concurrent Rendering 等新功能，本文將介紹如何善用這些特性...",
+                PublishedDate = new DateTime(2024, 3, 10),
+                CategoryName = "前端技術",
+                AuthorName = "前端專家",
+                ViewCount = 1100,
+                Slug = "react-18-new-features-best-practices",
+                Tags = new List<string> { "React", "前端", "效能優化" },
+                IsFeatured = false
+            },
+            new HomeArticleViewModel
+            {
+                Id = 9,
+                Title = "SQL Server 2022 新功能解析",
+                Summary = "探索 SQL Server 2022 的創新功能",
+                Preview = "SQL Server 2022 推出多項新功能，包括更強的安全性與雲端整合，本文將帶你快速掌握...",
+                PublishedDate = new DateTime(2023, 9, 30),
+                CategoryName = "資料庫",
+                AuthorName = "資料庫專家",
+                ViewCount = 670,
+                Slug = "sql-server-2022-new-features",
+                Tags = new List<string> { "SQL Server", "資料庫", "新功能" },
+                IsFeatured = false
+            },
+            new HomeArticleViewModel
+            {
+                Id = 10,
+                Title = "Kubernetes 叢集部署全攻略",
+                Summary = "從基礎到進階，掌握 K8s 部署技巧",
+                Preview = "Kubernetes 已成為雲端原生應用的核心，本文將介紹如何部署與管理 K8s 叢集...",
+                PublishedDate = new DateTime(2025, 5, 20),
+                CategoryName = "DevOps",
+                AuthorName = "雲端架構師",
+                ViewCount = 800,
+                Slug = "kubernetes-cluster-deployment-guide",
+                Tags = new List<string> { "Kubernetes", "DevOps", "雲端" },
+                IsFeatured = true
+            },
+            new HomeArticleViewModel
+            {
+                Id = 11,
+                Title = "AWS Lambda 實戰應用",
+                Summary = "深入了解 AWS Lambda 的應用場景與最佳實踐",
+                Preview = "AWS Lambda 是無伺服器運算的代表，本文將介紹其架構、觸發方式與實際案例...",
+                PublishedDate = new DateTime(2024, 10, 8),
+                CategoryName = "雲端服務",
+                AuthorName = "雲端專家",
+                ViewCount = 590,
+                Slug = "aws-lambda-in-action",
+                Tags = new List<string> { "AWS", "Lambda", "雲端", "Serverless" },
+                IsFeatured = false
+            },
+            new HomeArticleViewModel
+            {
+                Id = 12,
+                Title = "Git 進階操作與團隊協作技巧",
+                Summary = "提升團隊開發效率的 Git 技巧",
+                Preview = "Git 是現代軟體開發不可或缺的工具，本文將介紹進階操作與團隊協作的最佳實踐...",
+                PublishedDate = new DateTime(2023, 2, 14),
+                CategoryName = "工具介紹",
+                AuthorName = "開發者",
+                ViewCount = 410,
+                Slug = "git-advanced-team-collaboration",
+                Tags = new List<string> { "Git", "版本控制", "團隊協作" },
+                IsFeatured = false
+            },
+            new HomeArticleViewModel
+            {
+                Id = 13,
+                Title = "CI/CD 自動化流程建置實戰",
+                Summary = "打造高效 DevOps 流程的實用指南",
+                Preview = "CI/CD 是現代軟體開發流程的核心，本文將帶你從零開始建置自動化流程...",
+                PublishedDate = new DateTime(2024, 6, 22),
+                CategoryName = "DevOps",
+                AuthorName = "DevOps 工程師",
+                ViewCount = 720,
+                Slug = "cicd-automation-practice",
+                Tags = new List<string> { "CI/CD", "自動化", "DevOps" },
+                IsFeatured = true
             }
         };
     }
