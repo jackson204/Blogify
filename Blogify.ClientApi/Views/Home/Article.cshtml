@@ -6,6 +6,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="article-detail">
+              
                 <h1>@Model.Title</h1>
                 <div class="meta text-muted mb-2">
                     <i class="fas fa-calendar-alt me-1"></i>@Model.PublishedDate.ToString("yyyy-MM-dd") |
@@ -28,6 +29,9 @@
                 <div class="article-content">
                     <p>@Model.Preview</p>
                 </div>
+                <a href="~/" class="btn btn-outline-primary mb-3">
+                    <i class="fas fa-arrow-left me-1"></i> 返回首頁
+                </a>
             </div>
         </div>
     </div>
