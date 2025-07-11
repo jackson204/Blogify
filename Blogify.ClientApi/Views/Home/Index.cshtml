@@ -83,13 +83,27 @@
                             {
                                 <div class="popular-article-item mb-3 pb-3 border-bottom">
                                     <h6 class="mb-1">
-                                        <a href="/article/@article.Slug" class="text-decoration-none">@article.Title</a>
+                                        <a href="/article/@article.Slug" class="text-decoration-none popular-article-link" 
+                                           title="@article.Summary">@article.Title</a>
                                     </h6>
-                                    <small class="text-muted">
-                                        <i class="fas fa-eye me-1"></i>@article.ViewCount 次閱讀
-                                    </small>
+                                    <div class="article-meta-small">
+                                        <small class="text-muted">
+                                            <i class="fas fa-eye me-1"></i>@article.ViewCount 次閱讀
+                                            <span class="mx-1">|</span>
+                                            <i class="fas fa-calendar-alt me-1"></i>@article.PublishedDate.ToString("MM-dd")
+                                        </small>
+                                    </div>
+                                    @if (article.IsFeatured)
+                                    {
+                                        <span class="badge bg-warning text-dark mt-1" style="font-size: 0.7rem;">精選</span>
+                                    }
                                 </div>
                             }
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="/articles" class="btn btn-outline-primary btn-sm">
+                                查看更多文章 <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
                         </div>
                     </div>
                 }

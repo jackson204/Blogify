@@ -162,7 +162,81 @@ public class HomeController : Controller
         {
             return NotFound();
         }
+        
+        // 增加閱讀次數 (模擬)
+        article.ViewCount++;
+        
         return View(article);
+    }
+
+    /// <summary>
+    /// 根據文章 ID 取得文章詳情
+    /// </summary>
+    /// <param name="id">文章 ID</param>
+    /// <returns>文章詳情頁面</returns>
+    [Route("article/{id:int}")]
+    public IActionResult ArticleById(int id)
+    {
+        var article = GetAllArticles().FirstOrDefault(a => a.Id == id);
+        if (article == null)
+        {
+            return NotFound();
+        }
+        
+        // 增加閱讀次數 (模擬)
+        article.ViewCount++;
+        
+        return View("Article", article);
+    }
+
+    /// <summary>
+    /// 文章列表頁面
+    /// </summary>
+    /// <returns>文章列表頁面</returns>
+    public IActionResult Articles()
+    {
+        var articles = GetAllArticles();
+        var articlesViewModel = new ArticlesViewModel
+        {
+            Articles = articles,
+            TotalArticles = articles.Count,
+            CurrentPage = 1,
+            PageSize = 10,
+            TotalPages = (int)Math.Ceiling(articles.Count / 10.0)
+        };
+
+        return View(articlesViewModel);
+    }
+
+    /// <summary>
+    /// 根據分類查看文章
+    /// </summary>
+    /// <param name="slug">分類 slug</param>
+    /// <returns>分類文章列表</returns>
+    [Route("category/{slug}")]
+    public IActionResult Category(string slug)
+    {
+        var articles = GetAllArticles();
+        var categoryArticles = articles.Where(a => a.CategoryName.ToLower().Replace(" ", "-") == slug).ToList();
+        
+        if (!categoryArticles.Any())
+        {
+            return NotFound();
+        }
+
+        var categoryName = categoryArticles.First().CategoryName;
+        var articlesViewModel = new ArticlesViewModel
+        {
+            Articles = categoryArticles,
+            TotalArticles = categoryArticles.Count,
+            CurrentPage = 1,
+            PageSize = 10,
+            TotalPages = (int)Math.Ceiling(categoryArticles.Count / 10.0),
+            CategoryName = categoryName,
+            CategorySlug = slug
+        };
+
+        return View("Articles", articlesViewModel);
     }
 
     // 取得所有文章的假資料方法

@@ -1,38 +1,169 @@
 @model Blogify.ClientApi.ViewModel.HomeArticleViewModel
 @{
     ViewBag.Title = Model.Title;
+    ViewBag.Description = Model.Summary;
+    ViewBag.Keywords = string.Join(",", Model.Tags ?? new List<string>());
 }
+
+@section Styles {
+    <link rel="stylesheet" href="~/client/css/article.css">
+}
+
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-8">
             <div class="article-detail">
-              
-                <h1>@Model.Title</h1>
-                <div class="meta text-muted mb-2">
-                    <i class="fas fa-calendar-alt me-1"></i>@Model.PublishedDate.ToString("yyyy-MM-dd") |
-                    <i class="fas fa-folder me-1"></i>@Model.CategoryName |
-                    <i class="fas fa-user me-1"></i>@Model.AuthorName |
-                    <i class="fas fa-eye me-1"></i>閱讀：@Model.ViewCount 次
-                </div>
-                <div class="mb-3">
-                    @if (Model.Tags != null)
-                    {
-                        foreach (var tag in Model.Tags)
+                <!-- 文章標題 -->
+                <h1 class="article-title mb-3">@Model.Title</h1>
+                
+                <!-- 文章標籤 -->
+                @if (Model.Tags != null && Model.Tags.Any())
+                {
+                    <div class="article-tags mb-3">
+                        @foreach (var tag in Model.Tags)
                         {
-                            <span class="badge bg-secondary me-1" style="font-size:1em;">@tag</span>
+                            <span class="badge bg-primary me-1" style="font-size: 0.9em;">@tag</span>
                         }
-                    }
+                    </div>
+                }
+                
+                <!-- 文章後設資料 -->
+                <div class="article-meta text-muted mb-4 p-3 bg-light rounded">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="meta-item mb-2">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                <strong>發佈日期：</strong>@Model.PublishedDate.ToString("yyyy年MM月dd日")
+                            </div>
+                            <div class="meta-item mb-2">
+                                <i class="fas fa-folder me-2"></i>
+                                <strong>分類：</strong>@Model.CategoryName
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="meta-item mb-2">
+                                <i class="fas fa-user me-2"></i>
+                                <strong>作者：</strong>@Model.AuthorName
+                            </div>
+                            <div class="meta-item mb-2">
+                                <i class="fas fa-eye me-2"></i>
+                                <strong>閱讀次數：</strong>@Model.ViewCount 次
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="article-summary mb-3">
-                    <strong>@Model.Summary</strong>
+
+                <!-- 文章摘要 -->
+                <div class="article-summary mb-4 p-3 border-start border-primary border-4 bg-light">
+                    <h5 class="text-primary mb-2">文章摘要</h5>
+                    <p class="mb-0"><strong>@Model.Summary</strong></p>
                 </div>
+
+                <!-- 文章內容 -->
                 <div class="article-content">
-                    <p>@Model.Preview</p>
+                    <div class="content-section">
+                        @Html.Raw(Model.Preview.Replace("\n", "<br/>"))
+                    </div>
+                    
+                    <!-- 模擬更多內容 -->
+                    <div class="content-section mt-4">
+                        <h3>詳細內容</h3>
+                        <p>這裡是文章的詳細內容。在實際應用中，您可以將完整的文章內容儲存在資料庫中，然後在這裡顯示。</p>
+                        <p>您可以包含程式碼範例、圖片、列表等各種內容格式。</p>
+                        
+                        <!-- 範例程式碼區塊 -->
+                        <div class="code-block bg-dark text-light p-3 rounded mt-3">
+                            <pre><code>
+// 範例程式碼
+public class Example
+{
+    public string Name { get; set; }
+    public int Value { get; set; }
+}
+                            </code></pre>
+                        </div>
+                    </div>
                 </div>
-                <a href="~/" class="btn btn-outline-primary mb-3">
-                    <i class="fas fa-arrow-left me-1"></i> 返回首頁
-                </a>
+
+                <!-- 文章導航 -->
+                <div class="article-navigation mt-5 pt-4 border-top">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="~/" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i>返回首頁
+                            </a>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-outline-success" onclick="shareArticle()">
+                                <i class="fas fa-share-alt me-2"></i>分享文章
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 側邊欄 -->
+        <div class="col-md-4">
+            <div class="sidebar">
+                <!-- 相關文章 -->
+                <div class="sidebar-section mb-4">
+                    <h5 class="sidebar-title mb-3">相關文章</h5>
+                    <div class="related-articles">
+                        <!-- 這裡可以顯示相關文章 -->
+                        <div class="related-article-item mb-3 pb-3 border-bottom">
+                            <h6 class="mb-1">
+                                <a href="#" class="text-decoration-none">相關文章標題 1</a>
+                            </h6>
+                            <small class="text-muted">2024-01-01</small>
+                        </div>
+                        <div class="related-article-item mb-3 pb-3 border-bottom">
+                            <h6 class="mb-1">
+                                <a href="#" class="text-decoration-none">相關文章標題 2</a>
+                            </h6>
+                            <small class="text-muted">2024-01-02</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文章資訊 -->
+                <div class="sidebar-section">
+                    <h5 class="sidebar-title mb-3">文章資訊</h5>
+                    <div class="article-info">
+                        <div class="info-item d-flex justify-content-between mb-2">
+                            <span>字數統計</span>
+                            <span class="fw-bold">約 @(Model.Preview.Length * 3) 字</span>
+                        </div>
+                        <div class="info-item d-flex justify-content-between mb-2">
+                            <span>預估閱讀時間</span>
+                            <span class="fw-bold">約 @Math.Max(1, Model.Preview.Length / 100) 分鐘</span>
+                        </div>
+                        <div class="info-item d-flex justify-content-between">
+                            <span>文章分類</span>
+                            <span class="fw-bold">@Model.CategoryName</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function shareArticle() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '@Model.Title',
+                    text: '@Model.Summary',
+                    url: window.location.href
+                });
+            } else {
+                // 備用方案：複製連結到剪貼簿
+                navigator.clipboard.writeText(window.location.href).then(function() {
+                    alert('文章連結已複製到剪貼簿！');
+                });
+            }
+        }
+    </script>
+}
