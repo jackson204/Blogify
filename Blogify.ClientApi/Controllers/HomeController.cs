@@ -235,15 +235,30 @@ public class HomeController : Controller
     [Route("category/{slug}")]
     public IActionResult Category(string slug)
     {
+        // 取得所有文章
         var articles = GetAllArticles();
-        var categoryArticles = articles.Where(a => a.CategoryName.ToLower().Replace(" ", "-") == slug).ToList();
-        
-        if (!categoryArticles.Any())
+        // 取得所有分類
+        var categories = new List<CategoryViewModel>
         {
-            return NotFound();
+            new CategoryViewModel { Id = 1, Name = "C# 開發", Description = "C# 程式設計相關文章", ArticleCount = 8, Slug = "csharp-development" },
+            new CategoryViewModel { Id = 2, Name = "前端技術", Description = "JavaScript、HTML、CSS 相關技術", ArticleCount = 6, Slug = "frontend-tech" },
+            new CategoryViewModel { Id = 3, Name = "資料庫", Description = "SQL Server、MySQL 等資料庫技術", ArticleCount = 4, Slug = "database" },
+            new CategoryViewModel { Id = 4, Name = "雲端服務", Description = "Azure、AWS 等雲端平台", ArticleCount = 3, Slug = "cloud-services" },
+            new CategoryViewModel { Id = 5, Name = "DevOps", Description = "CI/CD、容器化等開發維運", ArticleCount = 2, Slug = "devops" },
+            new CategoryViewModel { Id = 6, Name = "工具介紹", Description = "開發工具與實用軟體介紹", ArticleCount = 2, Slug = "tools" }
+        };
+
+        // 找到對應分類
+        var category = categories.FirstOrDefault(c => c.Slug.Equals(slug, StringComparison.OrdinalIgnoreCase));
+        if (category is null)
+        {
+            // 找不到分類，回傳 404
+            return NotFound($"找不到分類：{slug}");
         }
 
-        var categoryName = categoryArticles.First().CategoryName;
+        // 篩選該分類下的文章
+        var categoryArticles = articles.Where(a => a.CategoryName == category.Name).ToList();
+
         var articlesViewModel = new ArticlesViewModel
         {
             Articles = categoryArticles,
@@ -251,8 +266,8 @@ public class HomeController : Controller
             CurrentPage = 1,
             PageSize = 10,
             TotalPages = (int)Math.Ceiling(categoryArticles.Count / 10.0),
-            CategoryName = categoryName,
-            CategorySlug = slug
+            CategoryName = category.Name,
+            CategorySlug = category.Slug
         };
 
         return View("Articles", articlesViewModel);
