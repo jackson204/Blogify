@@ -1,3 +1,4 @@
+@model Blogify.ClientApi.ViewModel.AboutViewModel
 @{
     ViewBag.Title = "關於我們";
     ViewBag.Description = "專業的技術部落格平台，分享最新的程式設計知識和開發經驗";
@@ -185,15 +186,7 @@
         <div class="col-lg-8 mx-auto">
             <!-- 網站統計 -->
             <div class="stats-grid">
-                @{
-                    var statistics = new Dictionary<string, int> {
-                        { "總文章數", 25 },
-                        { "文章分類", 8 },
-                        { "總閱讀量", 15420 },
-                        { "註冊用戶", 326 }
-                    };
-                }
-                @foreach (var stat in statistics)
+                @foreach (var stat in Model.Statistics)
                 {
                     <div class="stat-card">
                         <div class="stat-number">@stat.Value.ToString("N0")</div>
@@ -280,11 +273,11 @@
                 <div class="contact-info">
                     <p class="mb-3">
                         <strong>📧 電子郵件:</strong> 
-                        <a href="mailto:contact@myblog.com" class="text-decoration-none">contact@myblog.com</a>
+                        <a href="mailto:@Model.ContactEmail" class="text-decoration-none">@Model.ContactEmail</a>
                     </p>
                     <p class="mb-3">
                         <strong>📅 成立時間:</strong> 
-                        2024年01月
+                        @Model.EstablishedDate.ToString("yyyy年MM月")
                     </p>
                     <p class="mb-0">
                         <strong>💡 回饋建議:</strong> 

@@ -80,19 +80,24 @@ public class HomeController : Controller
     /// <returns>關於頁面</returns>
     public IActionResult About()
     {
-        // 只傳遞基本的網站資訊，靜態內容直接在 View 中處理
+        // 取得實際資料
+        var allArticles = GetAllArticles();
+        var categories = GetAllCategories();
+        var totalViewCount = allArticles.Sum(a => a.ViewCount);
+        
+        // 建立動態統計資料
         var aboutViewModel = new AboutViewModel
         {
             SiteTitle = "MyBlog",
             SiteDescription = "專業的技術部落格平台，分享最新的程式設計知識和開發經驗",
             ContactEmail = "contact@myblog.com",
-            EstablishedDate = new DateTime(2023, 1, 1),
+            EstablishedDate = new DateTime(2024, 1, 1),
             Statistics = new Dictionary<string, int>
             {
-                { "總文章數", 25 },
-                { "技術分類", 8 },
-                { "月訪問量", 15000 },
-                { "註冊用戶", 850 }
+                { "總文章數", allArticles.Count },
+                { "文章分類", categories.Count },
+                { "總閱讀量", totalViewCount },
+                { "註冊用戶", 326 } // 這個暫時保持靜態，因為目前沒有用戶系統
             }
         };
 
