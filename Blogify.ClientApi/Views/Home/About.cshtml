@@ -1,7 +1,6 @@
-@model Blogify.ClientApi.ViewModel.AboutViewModel
 @{
     ViewBag.Title = "關於我們";
-    ViewBag.Description = Model.SiteDescription;
+    ViewBag.Description = "專業的技術部落格平台，分享最新的程式設計知識和開發經驗";
     ViewBag.Keywords = "關於,MyBlog,技術部落格,程式設計,開發團隊";
 }
 
@@ -176,7 +175,7 @@
     <div class="container">
         <div class="text-center">
             <h1 class="display-4 mb-3">關於 MyBlog</h1>
-            <p class="lead">@Model.SiteDescription</p>
+            <p class="lead">專業的技術部落格平台，分享最新的程式設計知識和開發經驗</p>
         </div>
     </div>
 </div>
@@ -186,7 +185,15 @@
         <div class="col-lg-8 mx-auto">
             <!-- 網站統計 -->
             <div class="stats-grid">
-                @foreach (var stat in Model.Statistics)
+                @{
+                    var statistics = new Dictionary<string, int> {
+                        { "總文章數", 25 },
+                        { "文章分類", 8 },
+                        { "總閱讀量", 15420 },
+                        { "註冊用戶", 326 }
+                    };
+                }
+                @foreach (var stat in statistics)
                 {
                     <div class="stat-card">
                         <div class="stat-number">@stat.Value.ToString("N0")</div>
@@ -197,31 +204,73 @@
 
             <!-- 關於內容 -->
             <div class="about-content">
-                @Html.Raw(Model.AboutContent)
+                <h3>關於 MyBlog</h3>
+                <p>MyBlog 是一個專為開發者和技術愛好者設計的部落格平台。我們致力於分享最新的程式設計知識、開發技巧和技術趨勢。</p>
+                
+                <h4>我們的使命</h4>
+                <p>透過高品質的技術文章和實用的開發指南，幫助開發者提升技能、解決問題，並跟上快速發展的技術世界。</p>
+                
+                <h4>技術特色</h4>
+                <ul>
+                    <li>使用 ASP.NET Core 8 建構的現代化 Web 應用程式</li>
+                    <li>響應式設計，支援各種裝置</li>
+                    <li>高效能的文章搜尋和分類系統</li>
+                    <li>用戶友好的管理後台</li>
+                </ul>
+                
+                <h4>內容領域</h4>
+                <p>我們涵蓋的技術領域包括但不限於：</p>
+                <ul>
+                    <li>C# 和 .NET 開發</li>
+                    <li>前端技術 (JavaScript, HTML, CSS)</li>
+                    <li>資料庫設計與最佳化</li>
+                    <li>雲端服務與架構</li>
+                    <li>DevOps 和 CI/CD</li>
+                    <li>開發工具和生產力提升</li>
+                </ul>
             </div>
         </div>
     </div>
 
     <!-- 團隊成員 -->
-    @if (Model.TeamMembers != null && Model.TeamMembers.Any())
-    {
-        <div class="row mt-5">
-            <div class="col-12">
-                <h2 class="text-center mb-4">我們的團隊</h2>
-                <div class="team-grid">
-                    @foreach (var member in Model.TeamMembers)
-                    {
-                        <div class="team-member">
-                            <img src="@member.Avatar" alt="@member.Name" class="member-avatar">
-                            <div class="member-name">@member.Name</div>
-                            <div class="member-role">@member.Role</div>
-                            <div class="member-description">@member.Description</div>
-                        </div>
-                    }
-                </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">我們的團隊</h2>
+            <div class="team-grid">
+                @{
+                    var teamMembers = new List<object> {
+                        new { 
+                            Name = "技術團隊", 
+                            Role = "核心開發者", 
+                            Description = "負責平台架構設計和核心功能開發",
+                            Avatar = "https://via.placeholder.com/150x150?text=Tech+Team"
+                        },
+                        new { 
+                            Name = "內容編輯", 
+                            Role = "技術編輯", 
+                            Description = "負責文章審核和內容品質控制",
+                            Avatar = "https://via.placeholder.com/150x150?text=Editor"
+                        },
+                        new { 
+                            Name = "UI/UX 設計師", 
+                            Role = "視覺設計", 
+                            Description = "負責網站介面設計和使用者體驗最佳化",
+                            Avatar = "https://via.placeholder.com/150x150?text=Designer"
+                        }
+                    };
+                }
+                @foreach (dynamic member in teamMembers)
+                {
+                    <div class="team-member">
+                        <img src="@member.Avatar" alt="@member.Name" class="member-avatar">
+                        <div class="member-name">@member.Name</div>
+                        <div class="member-role">@member.Role</div>
+                        <div class="member-description">@member.Description</div>
+                    </div>
+                }
             </div>
         </div>
-    }
+    </div>
 
     <!-- 聯絡資訊 -->
     <div class="row mt-5">
@@ -231,11 +280,11 @@
                 <div class="contact-info">
                     <p class="mb-3">
                         <strong>📧 電子郵件:</strong> 
-                        <a href="mailto:@Model.ContactEmail" class="text-decoration-none">@Model.ContactEmail</a>
+                        <a href="mailto:contact@myblog.com" class="text-decoration-none">contact@myblog.com</a>
                     </p>
                     <p class="mb-3">
                         <strong>📅 成立時間:</strong> 
-                        @Model.EstablishedDate.ToString("yyyy年MM月")
+                        2024年01月
                     </p>
                     <p class="mb-0">
                         <strong>💡 回饋建議:</strong> 

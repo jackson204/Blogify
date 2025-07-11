@@ -147,63 +147,19 @@ public class HomeController : Controller
     /// <returns>關於頁面</returns>
     public IActionResult About()
     {
+        // 只傳遞基本的網站資訊，靜態內容直接在 View 中處理
         var aboutViewModel = new AboutViewModel
         {
             SiteTitle = "MyBlog",
             SiteDescription = "專業的技術部落格平台，分享最新的程式設計知識和開發經驗",
-            AboutContent = @"
-                <h3>關於 MyBlog</h3>
-                <p>MyBlog 是一個專為開發者和技術愛好者設計的部落格平台。我們致力於分享最新的程式設計知識、開發技巧和技術趨勢。</p>
-                
-                <h4>我們的使命</h4>
-                <p>透過高品質的技術文章和實用的開發指南，幫助開發者提升技能、解決問題，並跟上快速發展的技術世界。</p>
-                
-                <h4>技術特色</h4>
-                <ul>
-                    <li>使用 ASP.NET Core 8 建構的現代化 Web 應用程式</li>
-                    <li>響應式設計，支援各種裝置</li>
-                    <li>高效能的文章搜尋和分類系統</li>
-                    <li>用戶友好的管理後台</li>
-                </ul>
-                
-                <h4>內容領域</h4>
-                <p>我們涵蓋的技術領域包括但不限於：</p>
-                <ul>
-                    <li>C# 和 .NET 開發</li>
-                    <li>前端技術 (JavaScript, HTML, CSS)</li>
-                    <li>資料庫設計與最佳化</li>
-                    <li>雲端服務與架構</li>
-                    <li>DevOps 和 CI/CD</li>
-                    <li>開發工具和生產力提升</li>
-                </ul>
-                
-                <h4>聯絡我們</h4>
-                <p>如果您有任何問題、建議或想要投稿，歡迎透過以下方式聯絡我們：</p>
-                <p>電子郵件: <a href='mailto:contact@myblog.com'>contact@myblog.com</a></p>
-            ",
+            ContactEmail = "contact@myblog.com",
+            EstablishedDate = new DateTime(2023, 1, 1),
             Statistics = new Dictionary<string, int>
             {
                 { "總文章數", 25 },
                 { "技術分類", 8 },
                 { "月訪問量", 15000 },
                 { "註冊用戶", 850 }
-            },
-            TeamMembers = new List<TeamMemberViewModel>
-            {
-                new TeamMemberViewModel 
-                { 
-                    Name = "技術團隊", 
-                    Role = "核心開發者", 
-                    Description = "負責平台架構設計和核心功能開發",
-                    Avatar = "https://via.placeholder.com/150x150?text=Tech+Team"
-                },
-                new TeamMemberViewModel 
-                { 
-                    Name = "內容編輯", 
-                    Role = "技術編輯", 
-                    Description = "負責文章審核和內容品質控制",
-                    Avatar = "https://via.placeholder.com/150x150?text=Editor"
-                }
             }
         };
 
