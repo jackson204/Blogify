@@ -127,12 +127,6 @@ public class HomeController : Controller
             }
         };
 
-        // 精選文章 (取前 3 篇標記為精選的文章)
-        homeViewModel.FeaturedArticles = homeViewModel.LatestArticles
-            .Where(a => a.IsFeatured)
-            .Take(3)
-            .ToList();
-
         // 熱門文章 (按閱讀次數排序)
         homeViewModel.PopularArticles = homeViewModel.LatestArticles
             .OrderByDescending(a => a.ViewCount)
