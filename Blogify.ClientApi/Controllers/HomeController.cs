@@ -50,7 +50,6 @@ public class HomeController : Controller
             WelcomeMessage = "歡迎來到 MyBlog",
             TotalArticles = sortedArticles.Count, // 使用實際文章數量
             TotalCategories = categories.Count, // 從假資料計算分類數量
-            LatestArticlesCount = sortedArticles.Count,
             CurrentPage = page,
             PageSize = pageSize,
             TotalPages = totalPages,

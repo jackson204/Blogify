@@ -36,11 +36,6 @@ public class HomeViewModel
     public int TotalCategories { get; set; }
 
     /// <summary>
-    /// 最新文章數量
-    /// </summary>
-    public int LatestArticlesCount { get; set; } = 10;
-
-    /// <summary>
     /// 網站標題
     /// </summary>
     public string SiteTitle { get; set; } = "MyBlog";
