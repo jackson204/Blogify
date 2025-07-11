@@ -34,15 +34,13 @@ public class HomeController : Controller
             .ToList();
         
         // 建立假分類資料
-        var categories = new List<CategoryViewModel>
+        var categories = GetAllCategories();
+        
+        // 計算每個分類的文章數量
+        foreach (var category in categories)
         {
-            new CategoryViewModel { Id = 1, Name = "C# 開發", Description = "C# 程式設計相關文章", ArticleCount = 1, Slug = "csharp-development" },
-            new CategoryViewModel { Id = 2, Name = "前端技術", Description = "JavaScript、HTML、CSS 相關技術", ArticleCount = 1, Slug = "frontend-tech" },
-            new CategoryViewModel { Id = 3, Name = "資料庫", Description = "SQL Server、MySQL 等資料庫技術", ArticleCount = 1, Slug = "database" },
-            new CategoryViewModel { Id = 4, Name = "雲端服務", Description = "Azure、AWS 等雲端平台", ArticleCount = 1, Slug = "cloud-services" },
-            new CategoryViewModel { Id = 5, Name = "DevOps", Description = "CI/CD、容器化等開發維運", ArticleCount = 1, Slug = "devops" },
-            new CategoryViewModel { Id = 6, Name = "工具介紹", Description = "開發工具與實用軟體介紹", ArticleCount = 1, Slug = "tools" }
-        };
+            category.ArticleCount = sortedArticles.Count(a => a.CategoryName == category.Name);
+        }
         
         // 建立假資料用於展示，之後會替換為真實資料庫查詢
         var homeViewModel = new HomeViewModel
@@ -182,16 +180,8 @@ public class HomeController : Controller
     {
         // 取得所有文章
         var articles = GetAllArticles();
-        // 取得所有分類
-        var categories = new List<CategoryViewModel>
-        {
-            new CategoryViewModel { Id = 1, Name = "C# 開發", Description = "C# 程式設計相關文章", ArticleCount = 1, Slug = "csharp-development" },
-            new CategoryViewModel { Id = 2, Name = "前端技術", Description = "JavaScript、HTML、CSS 相關技術", ArticleCount = 1, Slug = "frontend-tech" },
-            new CategoryViewModel { Id = 3, Name = "資料庫", Description = "SQL Server、MySQL 等資料庫技術", ArticleCount = 1, Slug = "database" },
-            new CategoryViewModel { Id = 4, Name = "雲端服務", Description = "Azure、AWS 等雲端平台", ArticleCount = 1, Slug = "cloud-services" },
-            new CategoryViewModel { Id = 5, Name = "DevOps", Description = "CI/CD、容器化等開發維運", ArticleCount = 1, Slug = "devops" },
-            new CategoryViewModel { Id = 6, Name = "工具介紹", Description = "開發工具與實用軟體介紹", ArticleCount = 1, Slug = "tools" }
-        };
+        // 取得所有分類 - 使用統一的分類資料
+        var categories = GetAllCategories();
 
         // 找到對應分類
         var category = categories.FirstOrDefault(c => c.Slug.Equals(slug, StringComparison.OrdinalIgnoreCase));
@@ -201,7 +191,7 @@ public class HomeController : Controller
             return NotFound($"找不到分類：{slug}");
         }
 
-        // 篩選該分類下的文章
+        // 篩選該分類下的文章 - 用分類名稱比較
         var categoryArticles = articles.Where(a => a.CategoryName == category.Name).ToList();
 
         var articlesViewModel = new ArticlesViewModel
@@ -230,7 +220,7 @@ public class HomeController : Controller
                 Summary = "深入探討 ASP.NET Core 8 的最新功能和改進",
                 Preview = "ASP.NET Core 8 帶來了許多令人興奮的新功能，包括更好的效能、新的 API 端點和改進的開發者體驗。本文將帶您深入了解這些新特性...",
                 PublishedDate = new DateTime(2025, 7, 1),
-                CategoryName = "C# 開發",
+                CategoryName = "後端開發", // 統一使用與 AdminApi 相同的分類名稱
                 AuthorName = "技術團隊",
                 ViewCount = 1205,
                 Slug = "aspnet-core-8-new-features-guide",
@@ -244,7 +234,7 @@ public class HomeController : Controller
                 Summary = "了解 JavaScript 最新版本的新語法和功能",
                 Preview = "JavaScript ES2024 版本引入了許多實用的新特性，包括新的陣列方法、改進的錯誤處理和更好的異步程式設計支援。讓我們一起探索這些新功能...",
                 PublishedDate = new DateTime(2024, 12, 15),
-                CategoryName = "前端技術",
+                CategoryName = "前端開發", // 統一分類名稱
                 AuthorName = "前端專家",
                 ViewCount = 892,
                 Slug = "javascript-es2024-new-features",
@@ -286,7 +276,7 @@ public class HomeController : Controller
                 Summary = "學習使用 Azure Functions 建立無伺服器應用程式",
                 Preview = "無伺服器架構是雲端運算的重要趨勢。Azure Functions 提供了一個強大的平台來建立事件驅動的應用程式...",
                 PublishedDate = new DateTime(2024, 8, 5),
-                CategoryName = "雲端服務",
+                CategoryName = "DevOps", // 改為 DevOps 分類
                 AuthorName = "雲端架構師",
                 ViewCount = 521,
                 Slug = "azure-functions-serverless-intro",
@@ -300,7 +290,7 @@ public class HomeController : Controller
                 Summary = "提升開發效率的 VS Code 擴充功能清單",
                 Preview = "Visual Studio Code 是目前最受歡迎的程式編輯器之一。透過安裝適當的擴充功能，可以大幅提升開發效率...",
                 PublishedDate = new DateTime(2023, 5, 18),
-                CategoryName = "工具介紹",
+                CategoryName = "前端開發", // 改為前端開發
                 AuthorName = "開發者",
                 ViewCount = 445,
                 Slug = "vscode-extensions-recommendations",
@@ -314,7 +304,7 @@ public class HomeController : Controller
                 Summary = "從入門到進階，打造互動式 Web 應用",
                 Preview = "Blazor WebAssembly 讓 C# 開發者能夠直接在瀏覽器中撰寫前端程式。本文將帶你一步步打造 Blazor 應用...",
                 PublishedDate = new DateTime(2025, 2, 28),
-                CategoryName = "C# 開發",
+                CategoryName = "前端開發", // 改為前端開發
                 AuthorName = "全端工程師",
                 ViewCount = 980,
                 Slug = "blazor-webassembly-tutorial",
@@ -328,7 +318,7 @@ public class HomeController : Controller
                 Summary = "掌握 React 18 的新特性與效能優化技巧",
                 Preview = "React 18 帶來了自動批次更新、Concurrent Rendering 等新功能，本文將介紹如何善用這些特性...",
                 PublishedDate = new DateTime(2024, 3, 10),
-                CategoryName = "前端技術",
+                CategoryName = "前端開發",
                 AuthorName = "前端專家",
                 ViewCount = 1100,
                 Slug = "react-18-new-features-best-practices",
@@ -370,7 +360,7 @@ public class HomeController : Controller
                 Summary = "深入了解 AWS Lambda 的應用場景與最佳實踐",
                 Preview = "AWS Lambda 是無伺服器運算的代表，本文將介紹其架構、觸發方式與實際案例...",
                 PublishedDate = new DateTime(2024, 10, 8),
-                CategoryName = "雲端服務",
+                CategoryName = "DevOps", // 改為 DevOps
                 AuthorName = "雲端專家",
                 ViewCount = 590,
                 Slug = "aws-lambda-in-action",
@@ -384,7 +374,7 @@ public class HomeController : Controller
                 Summary = "提升團隊開發效率的 Git 技巧",
                 Preview = "Git 是現代軟體開發不可或缺的工具，本文將介紹進階操作與團隊協作的最佳實踐...",
                 PublishedDate = new DateTime(2023, 2, 14),
-                CategoryName = "工具介紹",
+                CategoryName = "DevOps", // 改為 DevOps
                 AuthorName = "開發者",
                 ViewCount = 410,
                 Slug = "git-advanced-team-collaboration",
@@ -405,6 +395,22 @@ public class HomeController : Controller
                 Tags = new List<string> { "CI/CD", "自動化", "DevOps" },
                 IsFeatured = true
             }
+        };
+    }
+
+    /// <summary>
+    /// 取得所有分類資料 - 與 AdminApi 保持一致
+    /// </summary>
+    /// <returns>分類列表</returns>
+    private List<CategoryViewModel> GetAllCategories()
+    {
+        return new List<CategoryViewModel>
+        {
+            new CategoryViewModel { Id = 1, Name = "前端開發", Description = "前端技術相關文章", Slug = "frontend-development" },
+            new CategoryViewModel { Id = 2, Name = "後端開發", Description = "後端技術相關文章", Slug = "backend-development" },
+            new CategoryViewModel { Id = 3, Name = "資料庫", Description = "資料庫技術相關文章", Slug = "database" },
+            new CategoryViewModel { Id = 4, Name = "DevOps", Description = "DevOps 相關文章", Slug = "devops" },
+            new CategoryViewModel { Id = 5, Name = "行動開發", Description = "行動應用程式開發相關文章", Slug = "mobile-development" }
         };
     }
 }
