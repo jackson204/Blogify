@@ -54,4 +54,40 @@ public class HomeViewModel
     /// 歡迎訊息
     /// </summary>
     public string WelcomeMessage { get; set; } = "歡迎來到 MyBlog";
+
+    // 分頁相關屬性
+    /// <summary>
+    /// 當前頁數
+    /// </summary>
+    public int CurrentPage { get; set; } = 1;
+
+    /// <summary>
+    /// 每頁文章數
+    /// </summary>
+    public int PageSize { get; set; } = 5;
+
+    /// <summary>
+    /// 總頁數
+    /// </summary>
+    public int TotalPages { get; set; }
+
+    /// <summary>
+    /// 是否有上一頁
+    /// </summary>
+    public bool HasPreviousPage => CurrentPage > 1;
+
+    /// <summary>
+    /// 是否有下一頁
+    /// </summary>
+    public bool HasNextPage => CurrentPage < TotalPages;
+
+    /// <summary>
+    /// 上一頁頁數
+    /// </summary>
+    public int PreviousPage => CurrentPage - 1;
+
+    /// <summary>
+    /// 下一頁頁數
+    /// </summary>
+    public int NextPage => CurrentPage + 1;
 }

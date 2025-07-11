@@ -60,6 +60,39 @@
                             }
                         </div>
                     }
+                    
+                    <!-- 分頁 -->
+                    @if (Model.TotalPages > 1)
+                    {
+                        <nav aria-label="文章分頁" class="mt-4">
+                            <ul class="pagination justify-content-center">
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@Model.PreviousPage" aria-label="上一頁">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                }
+                                
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                        <a class="page-link" href="?page=@i">@i</a>
+                                    </li>
+                                }
+                                
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@Model.NextPage" aria-label="下一頁">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    }
                 }
                 else
                 {

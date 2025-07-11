@@ -14,10 +14,24 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(int page = 1)
     {
         // 取得所有文章資料
         var allArticles = GetAllArticles();
+        // 依照日期排序，最新在前
+        var sortedArticles = allArticles.OrderByDescending(a => a.PublishedDate).ToList();
+        
+        // 分頁設定
+        const int pageSize = 5;
+        var totalArticles = sortedArticles.Count;
+        var totalPages = (int)Math.Ceiling(totalArticles / (double)pageSize);
+        page = Math.Max(1, Math.Min(page, totalPages)); // 確保 page 在合法範圍
+        
+        // 取得目前頁面的文章
+        var pagedArticles = sortedArticles
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
         
         // 建立假資料用於展示，之後會替換為真實資料庫查詢
         var homeViewModel = new HomeViewModel
@@ -25,9 +39,12 @@ public class HomeController : Controller
             SiteTitle = "MyBlog",
             SiteDescription = "專業的技術部落格平台，分享最新的程式設計知識和開發經驗",
             WelcomeMessage = "歡迎來到 MyBlog",
-            TotalArticles = allArticles.Count, // 使用實際文章數量
+            TotalArticles = sortedArticles.Count, // 使用實際文章數量
             TotalCategories = 6, // 實際分類數量
-            LatestArticlesCount = allArticles.Count
+            LatestArticlesCount = sortedArticles.Count,
+            CurrentPage = page,
+            PageSize = pageSize,
+            TotalPages = totalPages
         };
 
         // 建立假分類資料
@@ -41,8 +58,8 @@ public class HomeController : Controller
             new CategoryViewModel { Id = 6, Name = "工具介紹", Description = "開發工具與實用軟體介紹", ArticleCount = 1, Slug = "tools" }
         };
 
-        // 使用 GetAllArticles() 方法取得文章資料，避免重複定義
-        homeViewModel.LatestArticles = allArticles;
+        // 使用排序後的文章資料
+        homeViewModel.LatestArticles = sortedArticles;
 
         // 熱門文章 (按閱讀次數排序)
         homeViewModel.PopularArticles = homeViewModel.LatestArticles
@@ -128,17 +145,27 @@ public class HomeController : Controller
     /// <summary>
     /// 文章列表頁面
     /// </summary>
+    /// <param name="page">目前頁數（預設 1）</param>
     /// <returns>文章列表頁面</returns>
-    public IActionResult Articles()
+    public IActionResult Articles(int page = 1)
     {
+        const int pageSize = 5;
         var articles = GetAllArticles();
+        var totalArticles = articles.Count;
+        var totalPages = (int)Math.Ceiling(totalArticles / (double)pageSize);
+        page = Math.Max(1, Math.Min(page, totalPages)); // 確保 page 在合法範圍
+        var pagedArticles = articles
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
         var articlesViewModel = new ArticlesViewModel
         {
-            Articles = articles,
-            TotalArticles = articles.Count,
-            CurrentPage = 1,
-            PageSize = 10,
-            TotalPages = (int)Math.Ceiling(articles.Count / 10.0)
+            Articles = pagedArticles,
+            TotalArticles = totalArticles,
+            CurrentPage = page,
+            PageSize = pageSize,
+            TotalPages = totalPages
         };
 
         return View(articlesViewModel);
