@@ -33,22 +33,8 @@ public class HomeController : Controller
             .Take(pageSize)
             .ToList();
         
-        // 建立假資料用於展示，之後會替換為真實資料庫查詢
-        var homeViewModel = new HomeViewModel
-        {
-            SiteTitle = "MyBlog",
-            SiteDescription = "專業的技術部落格平台，分享最新的程式設計知識和開發經驗",
-            WelcomeMessage = "歡迎來到 MyBlog",
-            TotalArticles = sortedArticles.Count, // 使用實際文章數量
-            TotalCategories = 6, // 實際分類數量
-            LatestArticlesCount = sortedArticles.Count,
-            CurrentPage = page,
-            PageSize = pageSize,
-            TotalPages = totalPages
-        };
-
         // 建立假分類資料
-        homeViewModel.Categories = new List<CategoryViewModel>
+        var categories = new List<CategoryViewModel>
         {
             new CategoryViewModel { Id = 1, Name = "C# 開發", Description = "C# 程式設計相關文章", ArticleCount = 1, Slug = "csharp-development" },
             new CategoryViewModel { Id = 2, Name = "前端技術", Description = "JavaScript、HTML、CSS 相關技術", ArticleCount = 1, Slug = "frontend-tech" },
@@ -56,6 +42,21 @@ public class HomeController : Controller
             new CategoryViewModel { Id = 4, Name = "雲端服務", Description = "Azure、AWS 等雲端平台", ArticleCount = 1, Slug = "cloud-services" },
             new CategoryViewModel { Id = 5, Name = "DevOps", Description = "CI/CD、容器化等開發維運", ArticleCount = 1, Slug = "devops" },
             new CategoryViewModel { Id = 6, Name = "工具介紹", Description = "開發工具與實用軟體介紹", ArticleCount = 1, Slug = "tools" }
+        };
+        
+        // 建立假資料用於展示，之後會替換為真實資料庫查詢
+        var homeViewModel = new HomeViewModel
+        {
+            SiteTitle = "MyBlog",
+            SiteDescription = "專業的技術部落格平台，分享最新的程式設計知識和開發經驗",
+            WelcomeMessage = "歡迎來到 MyBlog",
+            TotalArticles = sortedArticles.Count, // 使用實際文章數量
+            TotalCategories = categories.Count, // 從假資料計算分類數量
+            LatestArticlesCount = sortedArticles.Count,
+            CurrentPage = page,
+            PageSize = pageSize,
+            TotalPages = totalPages,
+            Categories = categories // 設定分類資料
         };
 
         // 使用分頁後的文章資料
